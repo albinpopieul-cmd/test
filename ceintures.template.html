@@ -43,12 +43,91 @@
     text-align: center;
     margin: 0.5rem 0 0.2rem;
   }
+  h2 { font-size: 1.6rem; margin: 0 0 1rem; }
   .sous-titre {
     text-align: center;
     color: var(--texte-att);
     font-size: 1.3rem;
     margin: 0 0 2rem;
   }
+  .entete-ecran {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+  }
+  .entete-ecran h1 { margin: 0; text-align: left; }
+
+  /* Boutons génériques */
+  .bouton-lien {
+    background: none;
+    border: none;
+    color: var(--texte-att);
+    text-decoration: underline;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 0.4rem 0;
+  }
+  .bouton-principal {
+    font-size: 1.3rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .bouton-secondaire {
+    font-size: 1.3rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 10px;
+    border: 2px solid var(--bordure);
+    background: #fff;
+    color: var(--texte);
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .bouton-danger {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 2px solid var(--rouge);
+    background: #fff;
+    color: var(--rouge);
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* Identification élève */
+  .grille-eleves {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .bouton-eleve {
+    font-size: 1.4rem;
+    font-weight: 600;
+    padding: 1.3rem 1rem;
+    border-radius: 12px;
+    border: 2px solid var(--bordure);
+    background: var(--fond-carte);
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--texte);
+  }
+  .bouton-eleve:hover, .bouton-eleve:focus-visible { border-color: var(--accent); outline: none; }
+  .message-vide {
+    text-align: center;
+    color: var(--texte-att);
+    font-size: 1.2rem;
+    padding: 2rem 1rem;
+  }
+  .barre-basse { text-align: center; margin-top: auto; padding-top: 2rem; }
+
+  /* Ceintures (par élève) */
   .grille-ceintures {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -68,10 +147,7 @@
     font-size: 1.15rem;
     color: var(--texte);
   }
-  .carte-ceinture:hover, .carte-ceinture:focus-visible {
-    border-color: var(--accent);
-    outline: none;
-  }
+  .carte-ceinture:hover, .carte-ceinture:focus-visible { border-color: var(--accent); outline: none; }
   .pastille {
     flex: none;
     width: 3.4rem;
@@ -84,24 +160,11 @@
     font-size: 1.4rem;
     border: 2px solid rgba(0,0,0,0.15);
   }
+  .pastille.petite { width: 2.1rem; height: 2.1rem; font-size: 0.95rem; }
   .carte-info { flex: 1; }
   .carte-nom { font-weight: 700; font-size: 1.3rem; }
   .carte-statut { color: var(--texte-att); font-size: 1rem; margin-top: 0.15rem; }
   .carte-statut.valide { color: var(--vert); font-weight: 600; }
-
-  .barre-basse {
-    text-align: center;
-    margin-top: 2.5rem;
-  }
-  .bouton-lien {
-    background: none;
-    border: none;
-    color: var(--texte-att);
-    text-decoration: underline;
-    font-size: 1rem;
-    cursor: pointer;
-    font-family: inherit;
-  }
 
   /* Écran de session */
   .entete-session {
@@ -119,11 +182,7 @@
     overflow: hidden;
     margin-bottom: 2.5rem;
   }
-  .barre-chrono {
-    height: 100%;
-    width: 100%;
-    background: var(--accent);
-  }
+  .barre-chrono { height: 100%; width: 100%; background: var(--accent); }
   .zone-question {
     flex: 1;
     display: flex;
@@ -142,11 +201,7 @@
   }
   .enonce.correct { color: var(--vert); }
   .enonce.incorrect { color: var(--rouge); }
-  .reponse-correcte {
-    font-size: 1.6rem;
-    color: var(--texte-att);
-    min-height: 2.2rem;
-  }
+  .reponse-correcte { font-size: 1.6rem; color: var(--texte-att); min-height: 2.2rem; }
   .champ-reponse {
     font-size: 2.6rem;
     text-align: center;
@@ -156,10 +211,7 @@
     border-radius: 10px;
     font-family: inherit;
   }
-  .champ-reponse:focus {
-    outline: none;
-    border-color: var(--accent);
-  }
+  .champ-reponse:focus { outline: none; border-color: var(--accent); }
   .bouton-valider {
     font-size: 1.6rem;
     padding: 0.5rem 1.6rem;
@@ -199,26 +251,71 @@
   .message-final { font-size: 1.7rem; }
   .message-final.reussi { color: var(--vert); }
   .message-final.a-revoir { color: var(--texte-att); }
-  .actions-resultats { display: flex; gap: 1rem; margin-top: 1rem; }
-  .bouton-principal {
-    font-size: 1.3rem;
-    padding: 0.7rem 1.6rem;
-    border-radius: 10px;
-    border: none;
-    background: var(--accent);
-    color: #fff;
-    cursor: pointer;
-    font-family: inherit;
-  }
-  .bouton-secondaire {
-    font-size: 1.3rem;
-    padding: 0.7rem 1.6rem;
-    border-radius: 10px;
+  .actions-resultats { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; justify-content: center; }
+
+  /* Espace enseignant */
+  .bloc {
+    background: var(--fond-carte);
     border: 2px solid var(--bordure);
-    background: #fff;
-    color: var(--texte);
-    cursor: pointer;
+    border-radius: 14px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .bloc h2 { margin-top: 0; }
+  .ligne-formulaire { display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; }
+  .champ-texte {
+    font-size: 1.2rem;
+    padding: 0.5rem 0.8rem;
+    border: 2px solid var(--bordure);
+    border-radius: 8px;
     font-family: inherit;
+    flex: 1;
+    min-width: 12rem;
+  }
+  .liste-classe { list-style: none; padding: 0; margin: 1rem 0 0; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .liste-classe li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    border: 2px solid var(--bordure);
+    border-radius: 999px;
+    padding: 0.35rem 0.5rem 0.35rem 1rem;
+    font-size: 1.05rem;
+  }
+  .liste-classe button {
+    border: none;
+    background: var(--rouge);
+    color: #fff;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+  }
+  .zone-scroll { overflow-x: auto; }
+  table.suivi { border-collapse: collapse; width: 100%; font-size: 1rem; }
+  table.suivi th, table.suivi td {
+    border: 1px solid var(--bordure);
+    padding: 0.5rem 0.6rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+  table.suivi th.nom-eleve, table.suivi td.nom-eleve { text-align: left; }
+  table.suivi td.valide { color: var(--vert); font-weight: 700; }
+  table.suivi td.non-tente { color: var(--texte-att); }
+  .actions-enseignant { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 0.8rem; }
+  .message-etat { font-size: 1rem; margin-top: 0.8rem; }
+  .message-etat.succes { color: var(--vert); }
+  .message-etat.erreur { color: var(--rouge); }
+  .bouton-fichier { position: relative; overflow: hidden; display: inline-block; }
+  .bouton-fichier input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -230,7 +327,7 @@
       --fond-carte: #1d2124;
       --accent: #4d8fd6;
     }
-    .champ-reponse, .bouton-choix, .bouton-secondaire { background: #1d2124; color: var(--texte); }
+    .champ-reponse, .bouton-choix, .bouton-secondaire, .champ-texte, .liste-classe li { background: #1d2124; color: var(--texte); }
   }
 </style>
 </head>
@@ -243,33 +340,39 @@
 __GENERATEURS__
 
 /* ==========================================================================
+   Gestion des données multi-élèves — généré depuis stockage.mjs
+   ========================================================================== */
+__STOCKAGE__
+
+/* ==========================================================================
    Application
    ========================================================================== */
 (function () {
   'use strict';
 
-  var CLE_PROGRESSION = 'ceintures-cm2-progress-v1';
+  var CLE_STOCKAGE = 'ceintures-cm2-v2';
   var NB_QUESTIONS = 10;
   var SEUIL_REUSSITE = 8;
   var TEMPS_LIMITE = { 1: 12, 2: 10, 3: 8, 4: 14, 5: 15, 6: 16, 7: 18, 8: 20 };
 
   var app = document.getElementById('app');
 
-  function chargerProgression() {
+  function chargerStore() {
     try {
-      return JSON.parse(localStorage.getItem(CLE_PROGRESSION)) || {};
-    } catch (e) {
-      return {};
-    }
+      var brut = JSON.parse(localStorage.getItem(CLE_STOCKAGE));
+      if (brut && brut.roster && brut.eleves) return brut;
+    } catch (e) { /* ignore, on repart d'un store vide */ }
+    return creerStockageVide();
   }
 
-  function sauverProgression(progression) {
-    localStorage.setItem(CLE_PROGRESSION, JSON.stringify(progression));
+  function sauverStore() {
+    localStorage.setItem(CLE_STOCKAGE, JSON.stringify(store));
   }
 
-  var progression = chargerProgression();
-
-  var session = null; // { numero, items, index, scores, timeoutId }
+  var store = chargerStore();
+  var eleveCourant = null;
+  var enseignantAuthentifie = false;
+  var session = null;
 
   function el(tag, props, enfants) {
     var node = document.createElement(tag);
@@ -287,20 +390,76 @@ __GENERATEURS__
 
   function vider(node) { while (node.firstChild) node.removeChild(node.firstChild); }
 
+  function telechargerFichier(nomFichier, contenu, type) {
+    var blob = new Blob([contenu], { type: type });
+    var url = URL.createObjectURL(blob);
+    var lien = document.createElement('a');
+    lien.href = url;
+    lien.download = nomFichier;
+    document.body.appendChild(lien);
+    lien.click();
+    document.body.removeChild(lien);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function dateFichier() {
+    var d = new Date();
+    function p(n) { return String(n).padStart(2, '0'); }
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  }
+
   // --------------------------------------------------------------------
-  // Écran d'accueil
+  // Écran d'identification (choix de l'élève)
   // --------------------------------------------------------------------
 
-  function afficherAccueil() {
+  function afficherIdentification() {
+    eleveCourant = null;
     session = null;
     vider(app);
     app.appendChild(el('h1', { text: 'Ceintures de calcul mental' }));
-    app.appendChild(el('p', { class: 'sous-titre', text: 'CM2 — 8 ceintures pour progresser, sans connexion' }));
+    app.appendChild(el('p', { class: 'sous-titre', text: 'CM2 — Qui es-tu ?' }));
+
+    if (store.roster.length === 0) {
+      app.appendChild(el('p', { class: 'message-vide', text: 'Aucun élève n’est encore configuré. Rendez-vous dans l’Espace enseignant pour ajouter la classe.' }));
+    } else {
+      var grille = el('div', { class: 'grille-eleves' });
+      store.roster.forEach(function (nom) {
+        grille.appendChild(el('button', {
+          class: 'bouton-eleve',
+          type: 'button',
+          text: nom,
+          onclick: function () { eleveCourant = nom; afficherCeintures(); },
+        }));
+      });
+      app.appendChild(grille);
+    }
+
+    app.appendChild(el('div', { class: 'barre-basse' }, [
+      el('button', { class: 'bouton-lien', type: 'button', text: 'Espace enseignant', onclick: afficherEnseignantEntree }),
+    ]));
+  }
+
+  // --------------------------------------------------------------------
+  // Écran des ceintures (personnalisé par élève)
+  // --------------------------------------------------------------------
+
+  function afficherCeintures() {
+    session = null;
+    vider(app);
+    app.appendChild(el('div', { class: 'entete-ecran' }, [
+      el('h1', { text: eleveCourant }),
+      el('button', { class: 'bouton-lien', type: 'button', text: 'Changer d’élève', onclick: afficherIdentification }),
+    ]));
+    app.appendChild(el('p', { class: 'sous-titre', text: '8 ceintures pour progresser en calcul mental' }));
 
     var grille = el('div', { class: 'grille-ceintures' });
+    var donneesEleve = store.eleves[eleveCourant] || {};
     CEINTURES.forEach(function (ceinture) {
-      var info = progression[ceinture.numero];
-      var statut = el('div', { class: 'carte-statut' + (info && info.valide ? ' valide' : ''), text: info ? (info.valide ? '✓ Validée — meilleur score ' + info.meilleurScore + '/' + NB_QUESTIONS : 'Meilleur score : ' + info.meilleurScore + '/' + NB_QUESTIONS) : 'Pas encore tentée' });
+      var info = donneesEleve[ceinture.numero];
+      var statut = el('div', {
+        class: 'carte-statut' + (info && info.valide ? ' valide' : ''),
+        text: info ? (info.valide ? '✓ Validée — meilleur score ' + info.meilleurScore + '/' + NB_QUESTIONS : 'Meilleur score : ' + info.meilleurScore + '/' + NB_QUESTIONS) : 'Pas encore tentée',
+      });
       var pastille = el('div', { class: 'pastille', text: String(ceinture.numero), style: 'background:' + ceinture.couleur + ';color:' + ceinture.texte + ';' });
       var carte = el('button', { class: 'carte-ceinture', type: 'button', onclick: function () { demarrerSession(ceinture.numero); } }, [
         pastille,
@@ -312,18 +471,6 @@ __GENERATEURS__
       grille.appendChild(carte);
     });
     app.appendChild(grille);
-
-    app.appendChild(el('div', { class: 'barre-basse' }, [
-      el('button', { class: 'bouton-lien', type: 'button', onclick: reinitialiserProgression, text: 'Réinitialiser la progression' }),
-    ]));
-  }
-
-  function reinitialiserProgression() {
-    if (window.confirm('Effacer toute la progression enregistrée sur cet appareil ?')) {
-      progression = {};
-      sauverProgression(progression);
-      afficherAccueil();
-    }
   }
 
   // --------------------------------------------------------------------
@@ -345,7 +492,7 @@ __GENERATEURS__
     var item = session.items[session.index];
 
     var entete = el('div', { class: 'entete-session' }, [
-      el('span', { text: 'Ceinture ' + ceinture.nom }),
+      el('span', { text: eleveCourant + ' — Ceinture ' + ceinture.nom }),
       el('span', { text: 'Question ' + (session.index + 1) + ' / ' + NB_QUESTIONS }),
     ]);
     app.appendChild(entete);
@@ -386,7 +533,6 @@ __GENERATEURS__
     var duree = TEMPS_LIMITE[ceinture.numero] || 15;
     barreChrono.style.transition = 'none';
     barreChrono.style.width = '100%';
-    // Forcer le recalcul de style avant de démarrer la transition.
     void barreChrono.offsetWidth;
     barreChrono.style.transition = 'width ' + duree + 's linear';
     barreChrono.style.width = '0%';
@@ -434,30 +580,230 @@ __GENERATEURS__
     var score = session.scores.reduce(function (a, b) { return a + b; }, 0);
     var reussi = score >= SEUIL_REUSSITE;
 
-    var info = progression[ceinture.numero] || { meilleurScore: 0, valide: false };
-    info.meilleurScore = Math.max(info.meilleurScore, score);
-    if (reussi) info.valide = true;
-    progression[ceinture.numero] = info;
-    sauverProgression(progression);
+    store = enregistrerScore(store, eleveCourant, ceinture.numero, score, SEUIL_REUSSITE);
+    sauverStore();
 
     vider(app);
-    var suivante = CEINTURES[ceinture.numero]; // numero suivant (index = numero)
+    var suivante = CEINTURES[ceinture.numero];
     app.appendChild(el('div', { class: 'resultats' }, [
-      el('div', { class: 'sous-titre', text: 'Ceinture ' + ceinture.nom }),
+      el('div', { class: 'sous-titre', text: eleveCourant + ' — Ceinture ' + ceinture.nom }),
       el('div', { class: 'score-final', text: score + ' / ' + NB_QUESTIONS }),
       el('div', {
         class: 'message-final ' + (reussi ? 'reussi' : 'a-revoir'),
         text: reussi ? 'Ceinture obtenue !' : 'Pas encore — il faut ' + SEUIL_REUSSITE + '/' + NB_QUESTIONS + ' pour valider.',
       }),
       el('div', { class: 'actions-resultats' }, [
-        el('button', { class: 'bouton-secondaire', type: 'button', text: 'Retour à l’accueil', onclick: afficherAccueil }),
+        el('button', { class: 'bouton-secondaire', type: 'button', text: 'Mes ceintures', onclick: afficherCeintures }),
         el('button', { class: 'bouton-principal', type: 'button', text: 'Recommencer', onclick: function () { demarrerSession(ceinture.numero); } }),
         suivante ? el('button', { class: 'bouton-principal', type: 'button', text: 'Ceinture suivante', onclick: function () { demarrerSession(suivante.numero); } }) : null,
       ]),
     ]));
   }
 
-  afficherAccueil();
+  // --------------------------------------------------------------------
+  // Espace enseignant
+  // --------------------------------------------------------------------
+
+  function afficherEnseignantEntree() {
+    vider(app);
+    app.appendChild(el('h1', { text: 'Espace enseignant' }));
+
+    if (store.code === null) {
+      app.appendChild(el('p', { class: 'sous-titre', text: 'Première utilisation : choisissez un code à 4 chiffres pour protéger cet espace.' }));
+      var champ1 = el('input', { class: 'champ-texte', type: 'password', inputmode: 'numeric', maxlength: '4', placeholder: 'Code à 4 chiffres' });
+      var erreur = el('p', { class: 'message-etat erreur' });
+      var form = el('div', { class: 'bloc' }, [
+        el('div', { class: 'ligne-formulaire' }, [
+          champ1,
+          el('button', { class: 'bouton-principal', type: 'button', text: 'Créer le code', onclick: function () {
+            var v = champ1.value.trim();
+            if (!/^\d{4}$/.test(v)) { erreur.textContent = 'Le code doit contenir exactement 4 chiffres.'; return; }
+            store = definirCode(store, v);
+            sauverStore();
+            enseignantAuthentifie = true;
+            afficherEnseignant();
+          } }),
+        ]),
+        erreur,
+      ]);
+      app.appendChild(form);
+    } else {
+      app.appendChild(el('p', { class: 'sous-titre', text: 'Saisissez le code enseignant.' }));
+      var champ = el('input', { class: 'champ-texte', type: 'password', inputmode: 'numeric', maxlength: '4', placeholder: 'Code' });
+      var msgErreur = el('p', { class: 'message-etat erreur' });
+      var tentativeValidation = function () {
+        if (verifierCode(store, champ.value)) {
+          enseignantAuthentifie = true;
+          afficherEnseignant();
+        } else {
+          msgErreur.textContent = 'Code incorrect.';
+        }
+      };
+      champ.addEventListener('keydown', function (e) { if (e.key === 'Enter') tentativeValidation(); });
+      app.appendChild(el('div', { class: 'bloc' }, [
+        el('div', { class: 'ligne-formulaire' }, [
+          champ,
+          el('button', { class: 'bouton-principal', type: 'button', text: 'Entrer', onclick: tentativeValidation }),
+        ]),
+        msgErreur,
+      ]));
+      setTimeout(function () { champ.focus(); }, 0);
+    }
+
+    app.appendChild(el('div', { class: 'barre-basse' }, [
+      el('button', { class: 'bouton-lien', type: 'button', text: 'Retour', onclick: afficherIdentification }),
+    ]));
+  }
+
+  function afficherEnseignant() {
+    if (!enseignantAuthentifie) { afficherEnseignantEntree(); return; }
+    vider(app);
+    app.appendChild(el('div', { class: 'entete-ecran' }, [
+      el('h1', { text: 'Espace enseignant' }),
+      el('button', { class: 'bouton-lien', type: 'button', text: 'Quitter', onclick: afficherIdentification }),
+    ]));
+
+    // Gestion de la classe -------------------------------------------------
+    var champNom = el('input', { class: 'champ-texte', type: 'text', placeholder: 'Prénom de l’élève' });
+    var listeClasse = el('ul', { class: 'liste-classe' });
+    function rafraichirListe() {
+      vider(listeClasse);
+      store.roster.forEach(function (nom) {
+        listeClasse.appendChild(el('li', {}, [
+          el('span', { text: nom }),
+          el('button', { type: 'button', text: '×', onclick: function () {
+            if (window.confirm('Retirer ' + nom + ' de la classe ? Ses scores seront supprimés.')) {
+              store = retirerEleve(store, nom);
+              sauverStore();
+              rafraichirListe();
+              rafraichirTableau();
+            }
+          } }),
+        ]));
+      });
+    }
+    function ajouter() {
+      if (!champNom.value.trim()) return;
+      store = ajouterEleve(store, champNom.value);
+      sauverStore();
+      champNom.value = '';
+      rafraichirListe();
+      rafraichirTableau();
+    }
+    champNom.addEventListener('keydown', function (e) { if (e.key === 'Enter') ajouter(); });
+    app.appendChild(el('div', { class: 'bloc' }, [
+      el('h2', { text: 'Classe' }),
+      el('div', { class: 'ligne-formulaire' }, [
+        champNom,
+        el('button', { class: 'bouton-principal', type: 'button', text: 'Ajouter', onclick: ajouter }),
+      ]),
+      listeClasse,
+    ]));
+    rafraichirListe();
+
+    // Tableau de suivi -------------------------------------------------
+    var zoneTableau = el('div', { class: 'zone-scroll' });
+    function rafraichirTableau() {
+      vider(zoneTableau);
+      var noms = store.roster.slice().sort(function (a, b) { return a.localeCompare(b, 'fr'); });
+      if (noms.length === 0) {
+        zoneTableau.appendChild(el('p', { class: 'message-vide', text: 'Aucun élève dans la classe.' }));
+        return;
+      }
+      var thead = el('tr', {}, [el('th', { class: 'nom-eleve', text: 'Élève' })].concat(
+        CEINTURES.map(function (c) { return el('th', { text: c.numero + ' ' + c.nom }); })
+      ));
+      var lignes = [thead];
+      noms.forEach(function (nom) {
+        var donnees = store.eleves[nom] || {};
+        var cellules = [el('td', { class: 'nom-eleve', text: nom })];
+        CEINTURES.forEach(function (c) {
+          var info = donnees[c.numero];
+          if (!info) {
+            cellules.push(el('td', { class: 'non-tente', text: '–' }));
+          } else {
+            cellules.push(el('td', {
+              class: info.valide ? 'valide' : '',
+              text: (info.valide ? '✓ ' : '') + info.meilleurScore + '/' + NB_QUESTIONS,
+            }));
+          }
+        });
+        lignes.push(el('tr', {}, cellules));
+      });
+      zoneTableau.appendChild(el('table', { class: 'suivi' }, lignes));
+    }
+    rafraichirTableau();
+
+    app.appendChild(el('div', { class: 'bloc' }, [
+      el('h2', { text: 'Tableau de suivi' }),
+      zoneTableau,
+    ]));
+
+    // Export / import / réinitialisation -------------------------------
+    var messageEtat = el('p', { class: 'message-etat' });
+    var champImport = el('input', { type: 'file', accept: 'application/json' });
+    champImport.addEventListener('change', function () {
+      var fichier = champImport.files[0];
+      if (!fichier) return;
+      var lecteur = new FileReader();
+      lecteur.onload = function () {
+        try {
+          var importe = JSON.parse(lecteur.result);
+          if (!importe || !Array.isArray(importe.roster) || typeof importe.eleves !== 'object') {
+            throw new Error('format invalide');
+          }
+          store = fusionnerStockages(store, importe);
+          sauverStore();
+          rafraichirListe();
+          rafraichirTableau();
+          messageEtat.className = 'message-etat succes';
+          messageEtat.textContent = 'Import réussi : les données ont été fusionnées.';
+        } catch (e) {
+          messageEtat.className = 'message-etat erreur';
+          messageEtat.textContent = 'Fichier invalide : impossible d’importer ces données.';
+        }
+      };
+      lecteur.readAsText(fichier);
+      champImport.value = '';
+    });
+
+    app.appendChild(el('div', { class: 'bloc' }, [
+      el('h2', { text: 'Données' }),
+      el('p', { class: 'sous-titre', text: 'Pour rassembler les résultats de plusieurs tablettes, exportez depuis chacune puis importez les fichiers sur un même appareil.' }),
+      el('div', { class: 'actions-enseignant' }, [
+        el('button', { class: 'bouton-secondaire', type: 'button', text: 'Exporter les données (JSON)', onclick: function () {
+          telechargerFichier('ceintures-cm2-' + dateFichier() + '.json', JSON.stringify(store, null, 2), 'application/json');
+        } }),
+        el('button', { class: 'bouton-secondaire', type: 'button', text: 'Exporter le tableau (CSV)', onclick: function () {
+          telechargerFichier('tableau-suivi-' + dateFichier() + '.csv', '﻿' + genererCSV(store), 'text/csv;charset=utf-8');
+        } }),
+        el('label', { class: 'bouton-secondaire bouton-fichier' }, [document.createTextNode('Importer un fichier JSON'), champImport]),
+      ]),
+      messageEtat,
+    ]));
+
+    app.appendChild(el('div', { class: 'bloc' }, [
+      el('h2', { text: 'Zone sensible' }),
+      el('div', { class: 'actions-enseignant' }, [
+        el('button', { class: 'bouton-danger', type: 'button', text: 'Changer le code enseignant', onclick: function () {
+          var nouveau = window.prompt('Nouveau code à 4 chiffres :');
+          if (nouveau === null) return;
+          if (!/^\d{4}$/.test(nouveau.trim())) { window.alert('Le code doit contenir exactement 4 chiffres.'); return; }
+          store = definirCode(store, nouveau.trim());
+          sauverStore();
+        } }),
+        el('button', { class: 'bouton-danger', type: 'button', text: 'Tout réinitialiser', onclick: function () {
+          if (window.confirm('Supprimer définitivement toute la classe et tous les scores sur cet appareil ?')) {
+            store = creerStockageVide();
+            sauverStore();
+            afficherIdentification();
+          }
+        } }),
+      ]),
+    ]));
+  }
+
+  afficherIdentification();
 })();
 </script>
 </body>
