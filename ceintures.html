@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Ceintures de calcul mental — CM2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --fond: #ffffff;
+    --texte: #14171a;
+    --texte-att: #5a6169;
+    --bordure: #d8dce0;
+    --accent: #1f5fa8;
+    --vert: #1f8a3d;
+    --rouge: #c0342a;
+    --fond-carte: #f6f7f8;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--fond);
+    color: var(--texte);
+    font-family: "Segoe UI", Verdana, Arial, sans-serif;
+    height: 100%;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  #app {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 3rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    text-align: center;
+    margin: 0.5rem 0 0.2rem;
+  }
+  .sous-titre {
+    text-align: center;
+    color: var(--texte-att);
+    font-size: 1.3rem;
+    margin: 0 0 2rem;
+  }
+  .grille-ceintures {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.2rem;
+  }
+  .carte-ceinture {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--fond-carte);
+    border: 2px solid var(--bordure);
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    font-size: 1.15rem;
+    color: var(--texte);
+  }
+  .carte-ceinture:hover, .carte-ceinture:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+  }
+  .pastille {
+    flex: none;
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.4rem;
+    border: 2px solid rgba(0,0,0,0.15);
+  }
+  .carte-info { flex: 1; }
+  .carte-nom { font-weight: 700; font-size: 1.3rem; }
+  .carte-statut { color: var(--texte-att); font-size: 1rem; margin-top: 0.15rem; }
+  .carte-statut.valide { color: var(--vert); font-weight: 600; }
+
+  .barre-basse {
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+  .bouton-lien {
+    background: none;
+    border: none;
+    color: var(--texte-att);
+    text-decoration: underline;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* Écran de session */
+  .entete-session {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--texte-att);
+    margin-bottom: 0.6rem;
+  }
+  .piste-chrono {
+    height: 10px;
+    background: var(--bordure);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+  }
+  .barre-chrono {
+    height: 100%;
+    width: 100%;
+    background: var(--accent);
+  }
+  .zone-question {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 40vh;
+  }
+  .enonce {
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-bottom: 2rem;
+    transition: color 0.15s ease;
+  }
+  .enonce.correct { color: var(--vert); }
+  .enonce.incorrect { color: var(--rouge); }
+  .reponse-correcte {
+    font-size: 1.6rem;
+    color: var(--texte-att);
+    min-height: 2.2rem;
+  }
+  .champ-reponse {
+    font-size: 2.6rem;
+    text-align: center;
+    width: 8rem;
+    padding: 0.3rem 0.5rem;
+    border: 3px solid var(--bordure);
+    border-radius: 10px;
+    font-family: inherit;
+  }
+  .champ-reponse:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .bouton-valider {
+    font-size: 1.6rem;
+    padding: 0.5rem 1.6rem;
+    margin-left: 1rem;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .ligne-saisie { display: flex; align-items: center; justify-content: center; }
+  .choix-boutons { display: flex; gap: 1.2rem; }
+  .bouton-choix {
+    font-size: 3rem;
+    width: 6rem;
+    height: 4.2rem;
+    border-radius: 12px;
+    border: 3px solid var(--bordure);
+    background: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+  }
+  .bouton-choix:hover, .bouton-choix:focus-visible { border-color: var(--accent); outline: none; }
+
+  /* Écran de résultats */
+  .resultats {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.2rem;
+  }
+  .score-final { font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 700; }
+  .message-final { font-size: 1.7rem; }
+  .message-final.reussi { color: var(--vert); }
+  .message-final.a-revoir { color: var(--texte-att); }
+  .actions-resultats { display: flex; gap: 1rem; margin-top: 1rem; }
+  .bouton-principal {
+    font-size: 1.3rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .bouton-secondaire {
+    font-size: 1.3rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 10px;
+    border: 2px solid var(--bordure);
+    background: #fff;
+    color: var(--texte);
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fond: #14171a;
+      --texte: #f2f3f4;
+      --texte-att: #a6adb4;
+      --bordure: #3a3f45;
+      --fond-carte: #1d2124;
+      --accent: #4d8fd6;
+    }
+    .champ-reponse, .bouton-choix, .bouton-secondaire { background: #1d2124; color: var(--texte); }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ==========================================================================
+   Générateurs d'items — généré depuis generateurs.mjs (ne pas éditer ici)
+   ========================================================================== */
+function randInt(min, max, rng = Math.random) {
+  return Math.floor(rng() * (max - min + 1)) + min;
+}
+
+function pick(arr, rng = Math.random) {
+  return arr[randInt(0, arr.length - 1, rng)];
+}
+
+function gcd(a, b) {
+  a = Math.abs(a);
+  b = Math.abs(b);
+  while (b) {
+    [a, b] = [b, a % b];
+  }
+  return a || 1;
+}
+
+function fmtFR(n) {
+  // affichage français d'un nombre (virgule décimale)
+  return String(n).replace('.', ',');
+}
+
+function fraction(num, denom) {
+  const g = gcd(num, denom);
+  return { num: num / g, denom: denom / g };
+}
+
+function toNumericValue(raw) {
+  if (raw === undefined || raw === null) return NaN;
+  const s = String(raw).trim().toLowerCase().replace(/\s+/g, '').replace(',', '.');
+  if (s === '') return NaN;
+  const fracMatch = s.match(/^(-?\d+)\/(\d+)$/);
+  if (fracMatch) {
+    const n = Number(fracMatch[1]);
+    const d = Number(fracMatch[2]);
+    if (d === 0) return NaN;
+    return n / d;
+  }
+  if (!/^-?\d+(\.\d+)?$/.test(s)) return NaN;
+  return Number(s);
+}
+
+function checkAnswer(item, userInput) {
+  if (item.type === 'choix') {
+    const s = String(userInput).trim().toLowerCase();
+    return item.accept.some((a) => String(a).trim().toLowerCase() === s);
+  }
+  const v = toNumericValue(userInput);
+  if (Number.isNaN(v)) return false;
+  return item.accept.some((a) => {
+    const av = toNumericValue(a);
+    return !Number.isNaN(av) && Math.abs(av - v) < 1e-9;
+  });
+}
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function c1_complement10(rng) {
+  const a = randInt(1, 9, rng);
+  const b = 10 - a;
+  return {
+    enonce: `${a} + ? = 10`,
+    reponse: String(b),
+    accept: [String(b)],
+    type: 'nombre',
+  };
+}
+
+function c1_complement100(rng) {
+  const a = randInt(1, 9, rng) * 10;
+  const b = 100 - a;
+  return {
+    enonce: `${a} + ? = 100`,
+    reponse: String(b),
+    accept: [String(b)],
+    type: 'nombre',
+  };
+}
+
+function c1_addition(rng) {
+  const a = randInt(1, 9, rng);
+  const b = randInt(1, 9, rng);
+  return {
+    enonce: `${a} + ${b} = ?`,
+    reponse: String(a + b),
+    accept: [String(a + b)],
+    type: 'nombre',
+  };
+}
+
+function c1_soustraction(rng) {
+  const a = randInt(11, 20, rng);
+  const b = randInt(1, 9, rng);
+  return {
+    enonce: `${a} - ${b} = ?`,
+    reponse: String(a - b),
+    accept: [String(a - b)],
+    type: 'nombre',
+  };
+}
+
+const CEINTURE_1 = [c1_complement10, c1_complement100, c1_addition, c1_soustraction];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function c2_double(rng) {
+  const n = randInt(1, 50, rng);
+  return {
+    enonce: `Double de ${n} = ?`,
+    reponse: String(n * 2),
+    accept: [String(n * 2)],
+    type: 'nombre',
+  };
+}
+
+function c2_moitie(rng) {
+  const n = randInt(1, 50, rng) * 2;
+  return {
+    enonce: `Moitié de ${n} = ?`,
+    reponse: String(n / 2),
+    accept: [String(n / 2)],
+    type: 'nombre',
+  };
+}
+
+function c2_table_2_5_10(rng) {
+  const table = pick([2, 5, 10], rng);
+  const facteur = randInt(1, 10, rng);
+  return {
+    enonce: `${table} × ${facteur} = ?`,
+    reponse: String(table * facteur),
+    accept: [String(table * facteur)],
+    type: 'nombre',
+  };
+}
+
+function c2_mult_10_100(rng) {
+  const n = randInt(1, 99, rng);
+  const mult = pick([10, 100], rng);
+  return {
+    enonce: `${n} × ${mult} = ?`,
+    reponse: String(n * mult),
+    accept: [String(n * mult)],
+    type: 'nombre',
+  };
+}
+
+const CEINTURE_2 = [c2_double, c2_moitie, c2_table_2_5_10, c2_mult_10_100];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function c3_table(rng) {
+  const a = randInt(2, 9, rng);
+  const b = randInt(2, 9, rng);
+  return {
+    enonce: `${a} × ${b} = ?`,
+    reponse: String(a * b),
+    accept: [String(a * b)],
+    type: 'nombre',
+  };
+}
+
+function c3_division(rng) {
+  const a = randInt(2, 9, rng);
+  const b = randInt(2, 9, rng);
+  const produit = a * b;
+  return {
+    enonce: `${produit} ÷ ${a} = ?`,
+    reponse: String(b),
+    accept: [String(b)],
+    type: 'nombre',
+  };
+}
+
+function c3_facteur_manquant(rng) {
+  const a = randInt(2, 9, rng);
+  const b = randInt(2, 9, rng);
+  const produit = a * b;
+  return {
+    enonce: `? × ${a} = ${produit}`,
+    reponse: String(b),
+    accept: [String(b)],
+    type: 'nombre',
+  };
+}
+
+const CEINTURE_3 = [c3_table, c3_division, c3_facteur_manquant];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function c4_addition_ronde(rng) {
+  const base = pick([10, 100], rng);
+  const a = randInt(1, 90, rng) * base;
+  const b = randInt(1, 90, rng) * base;
+  return {
+    enonce: `${a} + ${b} = ?`,
+    reponse: String(a + b),
+    accept: [String(a + b)],
+    type: 'nombre',
+  };
+}
+
+function c4_soustraction_ronde(rng) {
+  const base = pick([10, 100], rng);
+  const a = randInt(10, 99, rng) * base;
+  const b = randInt(1, 9, rng) * base;
+  return {
+    enonce: `${a} - ${b} = ?`,
+    reponse: String(a - b),
+    accept: [String(a - b)],
+    type: 'nombre',
+  };
+}
+
+function c4_mult_2chiffres(rng) {
+  const a = randInt(11, 49, rng);
+  const b = randInt(2, 9, rng);
+  return {
+    enonce: `${a} × ${b} = ?`,
+    reponse: String(a * b),
+    accept: [String(a * b)],
+    type: 'nombre',
+  };
+}
+
+function c4_multdiv_puissance10(rng) {
+  const n = randInt(1, 90, rng) * 10;
+  const puissance = pick([10, 100, 1000], rng);
+  const op = pick(['×', '÷'], rng);
+  if (op === '×') {
+    return {
+      enonce: `${n} × ${puissance} = ?`,
+      reponse: String(n * puissance),
+      accept: [String(n * puissance)],
+      type: 'nombre',
+    };
+  }
+  const dividende = n * puissance;
+  return {
+    enonce: `${dividende} ÷ ${puissance} = ?`,
+    reponse: String(n),
+    accept: [String(n)],
+    type: 'nombre',
+  };
+}
+
+const CEINTURE_4 = [c4_addition_ronde, c4_soustraction_ronde, c4_mult_2chiffres, c4_multdiv_puissance10];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function c5_addition_decimaux(rng) {
+  const a = randInt(1, 99, rng) / 10;
+  const b = randInt(1, 99, rng) / 10;
+  const somme = Math.round((a + b) * 10) / 10;
+  return {
+    enonce: `${fmtFR(a)} + ${fmtFR(b)} = ?`,
+    reponse: fmtFR(somme),
+    accept: [String(somme), fmtFR(somme)],
+    type: 'nombre',
+  };
+}
+
+function c5_soustraction_decimaux(rng) {
+  const a = randInt(10, 99, rng) / 10;
+  const b = randInt(1, Math.round(a * 10) - 1, rng) / 10;
+  const diff = Math.round((a - b) * 10) / 10;
+  return {
+    enonce: `${fmtFR(a)} - ${fmtFR(b)} = ?`,
+    reponse: fmtFR(diff),
+    accept: [String(diff), fmtFR(diff)],
+    type: 'nombre',
+  };
+}
+
+function c5_mult_puissance10(rng) {
+  const n = randInt(1, 999, rng) / 10;
+  const puissance = pick([10, 100, 1000], rng);
+  const resultat = Math.round(n * puissance * 100) / 100;
+  return {
+    enonce: `${fmtFR(n)} × ${puissance} = ?`,
+    reponse: fmtFR(resultat),
+    accept: [String(resultat), fmtFR(resultat)],
+    type: 'nombre',
+  };
+}
+
+function c5_comparer(rng) {
+  const a = randInt(1, 99, rng) / 10;
+  let b = randInt(1, 99, rng) / 10;
+  if (rng() < 0.2) b = a; // égalités parfois
+  const symbole = a < b ? '<' : a > b ? '>' : '=';
+  return {
+    enonce: `${fmtFR(a)}  ?  ${fmtFR(b)}`,
+    reponse: symbole,
+    accept: [symbole],
+    type: 'choix',
+    choix: ['<', '=', '>'],
+  };
+}
+
+const CEINTURE_5 = [c5_addition_decimaux, c5_soustraction_decimaux, c5_mult_puissance10, c5_comparer];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function c6_fraction_de_quantite(rng) {
+  const denom = pick([2, 3, 4, 5, 10], rng);
+  const num = randInt(1, denom - 1, rng);
+  const k = randInt(2, 12, rng);
+  const quantite = denom * k;
+  const resultat = num * k;
+  return {
+    enonce: `${num}/${denom} de ${quantite} = ?`,
+    reponse: String(resultat),
+    accept: [String(resultat)],
+    type: 'nombre',
+  };
+}
+
+function c6_ecriture_decimale(rng) {
+  const denom = pick([10, 100], rng);
+  const num = randInt(1, denom - 1, rng);
+  const decimal = Math.round((num / denom) * 100) / 100;
+  return {
+    enonce: `${num}/${denom} = ?`,
+    reponse: fmtFR(decimal),
+    accept: [String(decimal), fmtFR(decimal)],
+    type: 'nombre',
+  };
+}
+
+function c6_somme_fractions(rng) {
+  const denom = pick([2, 3, 4, 5, 6, 8, 10], rng);
+  const num1 = randInt(1, denom - 2, rng);
+  const num2 = randInt(1, denom - 1 - num1, rng);
+  const somme = num1 + num2;
+  const reduite = fraction(somme, denom);
+  const canonique = `${reduite.num}/${reduite.denom}`;
+  const brute = `${somme}/${denom}`;
+  const decimal = Math.round((somme / denom) * 1000) / 1000;
+  return {
+    enonce: `${num1}/${denom} + ${num2}/${denom} = ?`,
+    reponse: canonique,
+    accept: [canonique, brute, String(decimal), fmtFR(decimal)],
+    type: 'nombre',
+  };
+}
+
+function c6_comparer_a_un(rng) {
+  const denom = randInt(2, 10, rng);
+  let num = randInt(1, denom + 3, rng);
+  if (num === denom && rng() < 0.5) num = denom; // garde parfois l'égalité
+  const symbole = num < denom ? '<' : num > denom ? '>' : '=';
+  return {
+    enonce: `${num}/${denom}  ?  1`,
+    reponse: symbole,
+    accept: [symbole],
+    type: 'choix',
+    choix: ['<', '=', '>'],
+  };
+}
+
+const CEINTURE_6 = [c6_fraction_de_quantite, c6_ecriture_decimale, c6_somme_fractions, c6_comparer_a_un];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function c7_pourcentage(rng) {
+  const pourcentage = pick([10, 25, 50, 75], rng);
+  const diviseur = pourcentage === 10 ? 10 : pourcentage === 50 ? 2 : 4; // 25 % et 75 % -> quarts
+  const k = randInt(1, 20, rng);
+  const base = diviseur * k;
+  const resultat = (base * pourcentage) / 100;
+  return {
+    enonce: `${pourcentage} % de ${base} = ?`,
+    reponse: String(resultat),
+    accept: [String(resultat)],
+    type: 'nombre',
+  };
+}
+
+function c7_proportionnalite(rng) {
+  const objets = ['stylos', 'cahiers', 'billes', 'gâteaux', 'images', 'bonbons'];
+  const objet = pick(objets, rng);
+  const u = randInt(2, 6, rng);
+  const prixUnitaire = randInt(2, 15, rng);
+  const m = randInt(2, 6, rng);
+  const quantite2 = u * m;
+  const prixU = u * prixUnitaire;
+  const reponse = quantite2 * prixUnitaire;
+  return {
+    enonce: `Si ${u} ${objet} coûtent ${prixU} €, combien coûtent ${quantite2} ${objet} ?`,
+    reponse: String(reponse),
+    accept: [String(reponse)],
+    type: 'nombre',
+  };
+}
+
+function c7_ordre_grandeur(rng) {
+  const a = randInt(1, 9, rng) * 100 + randInt(0, 9, rng) * 10 + randInt(0, 9, rng);
+  const b = randInt(2, 9, rng);
+  const aArrondi = Math.round(a / 100) * 100;
+  const estimation = aArrondi * b;
+  return {
+    enonce: `Ordre de grandeur (à la centaine) de ${a} × ${b} = ?`,
+    reponse: String(estimation),
+    accept: [String(estimation)],
+    type: 'nombre',
+  };
+}
+
+function c7_vitesse(rng) {
+  const v = randInt(1, 12, rng) * 10;
+  const t = randInt(1, 6, rng);
+  const distance = v * t;
+  return {
+    enonce: `Une voiture roule à ${v} km/h pendant ${t} h. Distance parcourue (en km) ?`,
+    reponse: String(distance),
+    accept: [String(distance)],
+    type: 'nombre',
+  };
+}
+
+const CEINTURE_7 = [c7_pourcentage, c7_proportionnalite, c7_ordre_grandeur, c7_vitesse];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function c8_distributivite(rng) {
+  const a = randInt(2, 12, rng);
+  const proche = pick([98, 99, 101, 102, 998, 999, 1001, 1002], rng);
+  const resultat = a * proche;
+  return {
+    enonce: `${a} × ${proche} = ?`,
+    reponse: String(resultat),
+    accept: [String(resultat)],
+    type: 'nombre',
+  };
+}
+
+function c8_calcul_combine(rng) {
+  const a = randInt(2, 12, rng);
+  const b = randInt(2, 12, rng);
+  const c = randInt(2, 20, rng);
+  const forme = pick(['somme_fois', 'fois_moins', 'moins_fois'], rng);
+  if (forme === 'somme_fois') {
+    const resultat = (a + b) * c;
+    return {
+      enonce: `(${a} + ${b}) × ${c} = ?`,
+      reponse: String(resultat),
+      accept: [String(resultat)],
+      type: 'nombre',
+    };
+  }
+  if (forme === 'fois_moins') {
+    const resultat = a * b - c;
+    return {
+      enonce: `${a} × ${b} - ${c} = ?`,
+      reponse: String(resultat),
+      accept: [String(resultat)],
+      type: 'nombre',
+    };
+  }
+  const d = a * b + randInt(1, 20, rng);
+  const resultat = d - a * b;
+  return {
+    enonce: `${d} - (${a} × ${b}) = ?`,
+    reponse: String(resultat),
+    accept: [String(resultat)],
+    type: 'nombre',
+  };
+}
+
+function c8_grands_nombres(rng) {
+  const type = pick(['mult', 'div'], rng);
+  if (type === 'mult') {
+    const a = randInt(2, 9, rng) * 10;
+    const b = randInt(2, 9, rng) * 10;
+    const resultat = a * b;
+    return {
+      enonce: `${a} × ${b} = ?`,
+      reponse: String(resultat),
+      accept: [String(resultat)],
+      type: 'nombre',
+    };
+  }
+  const puissance = pick([10, 100, 1000], rng);
+  const quotient = randInt(2, 90, rng);
+  const dividende = quotient * puissance;
+  return {
+    enonce: `${dividende} ÷ ${puissance} = ?`,
+    reponse: String(quotient),
+    accept: [String(quotient)],
+    type: 'nombre',
+  };
+}
+
+function c8_mix(rng) {
+  const toutesCeintures = [CEINTURE_4, CEINTURE_5, CEINTURE_6, CEINTURE_7];
+  const ceinture = pick(toutesCeintures, rng);
+  const generateur = pick(ceinture, rng);
+  return generateur(rng);
+}
+
+const CEINTURE_8 = [c8_distributivite, c8_calcul_combine, c8_grands_nombres, c8_mix];
+
+// ---------------------------------------------------------------------------
+
+const CEINTURES = [
+  { numero: 1, nom: 'Blanche', couleur: '#f5f5f0', texte: '#1a1a1a', generateurs: CEINTURE_1 },
+  { numero: 2, nom: 'Jaune', couleur: '#f4c430', texte: '#1a1a1a', generateurs: CEINTURE_2 },
+  { numero: 3, nom: 'Orange', couleur: '#e8720c', texte: '#ffffff', generateurs: CEINTURE_3 },
+  { numero: 4, nom: 'Verte', couleur: '#2e8b3d', texte: '#ffffff', generateurs: CEINTURE_4 },
+  { numero: 5, nom: 'Bleue', couleur: '#1f5fa8', texte: '#ffffff', generateurs: CEINTURE_5 },
+  { numero: 6, nom: 'Marron', couleur: '#6b4226', texte: '#ffffff', generateurs: CEINTURE_6 },
+  { numero: 7, nom: 'Noire', couleur: '#1a1a1a', texte: '#ffffff', generateurs: CEINTURE_7 },
+  { numero: 8, nom: 'Rouge', couleur: '#b5121b', texte: '#ffffff', generateurs: CEINTURE_8 },
+];
+
+function genererItem(numeroCeinture, rng = Math.random) {
+  const ceinture = CEINTURES[numeroCeinture - 1];
+  if (!ceinture) throw new Error(`Ceinture inconnue : ${numeroCeinture}`);
+  const generateur = pick(ceinture.generateurs, rng);
+  return generateur(rng);
+}
+
+/* ==========================================================================
+   Application
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var CLE_PROGRESSION = 'ceintures-cm2-progress-v1';
+  var NB_QUESTIONS = 10;
+  var SEUIL_REUSSITE = 8;
+  var TEMPS_LIMITE = { 1: 12, 2: 10, 3: 8, 4: 14, 5: 15, 6: 16, 7: 18, 8: 20 };
+
+  var app = document.getElementById('app');
+
+  function chargerProgression() {
+    try {
+      return JSON.parse(localStorage.getItem(CLE_PROGRESSION)) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function sauverProgression(progression) {
+    localStorage.setItem(CLE_PROGRESSION, JSON.stringify(progression));
+  }
+
+  var progression = chargerProgression();
+
+  var session = null; // { numero, items, index, scores, timeoutId }
+
+  function el(tag, props, enfants) {
+    var node = document.createElement(tag);
+    if (props) {
+      Object.keys(props).forEach(function (k) {
+        if (k === 'class') node.className = props[k];
+        else if (k === 'text') node.textContent = props[k];
+        else if (k.indexOf('on') === 0 && typeof props[k] === 'function') node.addEventListener(k.slice(2), props[k]);
+        else node.setAttribute(k, props[k]);
+      });
+    }
+    (enfants || []).forEach(function (c) { if (c) node.appendChild(c); });
+    return node;
+  }
+
+  function vider(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+
+  // --------------------------------------------------------------------
+  // Écran d'accueil
+  // --------------------------------------------------------------------
+
+  function afficherAccueil() {
+    session = null;
+    vider(app);
+    app.appendChild(el('h1', { text: 'Ceintures de calcul mental' }));
+    app.appendChild(el('p', { class: 'sous-titre', text: 'CM2 — 8 ceintures pour progresser, sans connexion' }));
+
+    var grille = el('div', { class: 'grille-ceintures' });
+    CEINTURES.forEach(function (ceinture) {
+      var info = progression[ceinture.numero];
+      var statut = el('div', { class: 'carte-statut' + (info && info.valide ? ' valide' : ''), text: info ? (info.valide ? '✓ Validée — meilleur score ' + info.meilleurScore + '/' + NB_QUESTIONS : 'Meilleur score : ' + info.meilleurScore + '/' + NB_QUESTIONS) : 'Pas encore tentée' });
+      var pastille = el('div', { class: 'pastille', text: String(ceinture.numero), style: 'background:' + ceinture.couleur + ';color:' + ceinture.texte + ';' });
+      var carte = el('button', { class: 'carte-ceinture', type: 'button', onclick: function () { demarrerSession(ceinture.numero); } }, [
+        pastille,
+        el('div', { class: 'carte-info' }, [
+          el('div', { class: 'carte-nom', text: 'Ceinture ' + ceinture.nom }),
+          statut,
+        ]),
+      ]);
+      grille.appendChild(carte);
+    });
+    app.appendChild(grille);
+
+    app.appendChild(el('div', { class: 'barre-basse' }, [
+      el('button', { class: 'bouton-lien', type: 'button', onclick: reinitialiserProgression, text: 'Réinitialiser la progression' }),
+    ]));
+  }
+
+  function reinitialiserProgression() {
+    if (window.confirm('Effacer toute la progression enregistrée sur cet appareil ?')) {
+      progression = {};
+      sauverProgression(progression);
+      afficherAccueil();
+    }
+  }
+
+  // --------------------------------------------------------------------
+  // Écran de session
+  // --------------------------------------------------------------------
+
+  function demarrerSession(numero) {
+    var items = [];
+    for (var i = 0; i < NB_QUESTIONS; i++) items.push(genererItem(numero));
+    session = { numero: numero, items: items, index: 0, scores: [], timeoutId: null };
+    afficherQuestion();
+  }
+
+  function ceintureCourante() { return CEINTURES[session.numero - 1]; }
+
+  function afficherQuestion() {
+    vider(app);
+    var ceinture = ceintureCourante();
+    var item = session.items[session.index];
+
+    var entete = el('div', { class: 'entete-session' }, [
+      el('span', { text: 'Ceinture ' + ceinture.nom }),
+      el('span', { text: 'Question ' + (session.index + 1) + ' / ' + NB_QUESTIONS }),
+    ]);
+    app.appendChild(entete);
+
+    var barreChrono = el('div', { class: 'barre-chrono' });
+    app.appendChild(el('div', { class: 'piste-chrono' }, [barreChrono]));
+
+    var enonce = el('div', { class: 'enonce', text: item.enonce });
+    var reponseAffichee = el('div', { class: 'reponse-correcte' });
+    var zone = el('div', { class: 'zone-question' }, [enonce, reponseAffichee]);
+
+    var saisie;
+    if (item.type === 'choix') {
+      saisie = el('div', { class: 'choix-boutons' });
+      item.choix.forEach(function (symbole) {
+        saisie.appendChild(el('button', {
+          class: 'bouton-choix',
+          type: 'button',
+          text: symbole,
+          onclick: function () { valider(symbole, item, enonce, reponseAffichee); },
+        }));
+      });
+    } else {
+      var champ = el('input', { class: 'champ-reponse', type: 'text', inputmode: 'decimal', autocomplete: 'off' });
+      var boutonValider = el('button', { class: 'bouton-valider', type: 'button', text: 'Valider', onclick: function () { valider(champ.value, item, enonce, reponseAffichee); } });
+      champ.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') valider(champ.value, item, enonce, reponseAffichee);
+      });
+      saisie = el('div', { class: 'ligne-saisie' }, [champ, boutonValider]);
+    }
+    zone.appendChild(saisie);
+    app.appendChild(zone);
+
+    if (item.type !== 'choix') {
+      setTimeout(function () { var c = app.querySelector('.champ-reponse'); if (c) c.focus(); }, 0);
+    }
+
+    var duree = TEMPS_LIMITE[ceinture.numero] || 15;
+    barreChrono.style.transition = 'none';
+    barreChrono.style.width = '100%';
+    // Forcer le recalcul de style avant de démarrer la transition.
+    void barreChrono.offsetWidth;
+    barreChrono.style.transition = 'width ' + duree + 's linear';
+    barreChrono.style.width = '0%';
+
+    session.dejaValide = false;
+    session.timeoutId = setTimeout(function () {
+      valider('', item, enonce, reponseAffichee, true);
+    }, duree * 1000);
+  }
+
+  function valider(valeur, item, enonce, reponseAffichee, tempsEcoule) {
+    if (session.dejaValide) return;
+    session.dejaValide = true;
+    clearTimeout(session.timeoutId);
+
+    var correct = !tempsEcoule && checkAnswer(item, valeur);
+    session.scores.push(correct ? 1 : 0);
+
+    var boutons = app.querySelectorAll('.bouton-choix, .bouton-valider, .champ-reponse');
+    boutons.forEach(function (b) { b.disabled = true; });
+
+    enonce.classList.add(correct ? 'correct' : 'incorrect');
+    if (!correct) {
+      reponseAffichee.textContent = tempsEcoule ? 'Temps écoulé — réponse : ' + item.reponse : 'Réponse : ' + item.reponse;
+    } else {
+      reponseAffichee.textContent = '✓';
+    }
+
+    setTimeout(function () {
+      session.index++;
+      if (session.index < NB_QUESTIONS) {
+        afficherQuestion();
+      } else {
+        afficherResultats();
+      }
+    }, correct ? 500 : 1400);
+  }
+
+  // --------------------------------------------------------------------
+  // Écran de résultats
+  // --------------------------------------------------------------------
+
+  function afficherResultats() {
+    var ceinture = ceintureCourante();
+    var score = session.scores.reduce(function (a, b) { return a + b; }, 0);
+    var reussi = score >= SEUIL_REUSSITE;
+
+    var info = progression[ceinture.numero] || { meilleurScore: 0, valide: false };
+    info.meilleurScore = Math.max(info.meilleurScore, score);
+    if (reussi) info.valide = true;
+    progression[ceinture.numero] = info;
+    sauverProgression(progression);
+
+    vider(app);
+    var suivante = CEINTURES[ceinture.numero]; // numero suivant (index = numero)
+    app.appendChild(el('div', { class: 'resultats' }, [
+      el('div', { class: 'sous-titre', text: 'Ceinture ' + ceinture.nom }),
+      el('div', { class: 'score-final', text: score + ' / ' + NB_QUESTIONS }),
+      el('div', {
+        class: 'message-final ' + (reussi ? 'reussi' : 'a-revoir'),
+        text: reussi ? 'Ceinture obtenue !' : 'Pas encore — il faut ' + SEUIL_REUSSITE + '/' + NB_QUESTIONS + ' pour valider.',
+      }),
+      el('div', { class: 'actions-resultats' }, [
+        el('button', { class: 'bouton-secondaire', type: 'button', text: 'Retour à l’accueil', onclick: afficherAccueil }),
+        el('button', { class: 'bouton-principal', type: 'button', text: 'Recommencer', onclick: function () { demarrerSession(ceinture.numero); } }),
+        suivante ? el('button', { class: 'bouton-principal', type: 'button', text: 'Ceinture suivante', onclick: function () { demarrerSession(suivante.numero); } }) : null,
+      ]),
+    ]));
+  }
+
+  afficherAccueil();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Ceintures de calcul mental — CM2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    --fond: #ffffff;
+    --texte: #14171a;
+    --texte-att: #5a6169;
+    --bordure: #d8dce0;
+    --accent: #1f5fa8;
+    --vert: #1f8a3d;
+    --rouge: #c0342a;
+    --fond-carte: #f6f7f8;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--fond);
+    color: var(--texte);
+    font-family: "Segoe UI", Verdana, Arial, sans-serif;
+    height: 100%;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  #app {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 3rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    text-align: center;
+    margin: 0.5rem 0 0.2rem;
+  }
+  .sous-titre {
+    text-align: center;
+    color: var(--texte-att);
+    font-size: 1.3rem;
+    margin: 0 0 2rem;
+  }
+  .grille-ceintures {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.2rem;
+  }
+  .carte-ceinture {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--fond-carte);
+    border: 2px solid var(--bordure);
+    border-radius: 14px;
+    padding: 1.1rem 1.3rem;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    font-size: 1.15rem;
+    color: var(--texte);
+  }
+  .carte-ceinture:hover, .carte-ceinture:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+  }
+  .pastille {
+    flex: none;
+    width: 3.4rem;
+    height: 3.4rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.4rem;
+    border: 2px solid rgba(0,0,0,0.15);
+  }
+  .carte-info { flex: 1; }
+  .carte-nom { font-weight: 700; font-size: 1.3rem; }
+  .carte-statut { color: var(--texte-att); font-size: 1rem; margin-top: 0.15rem; }
+  .carte-statut.valide { color: var(--vert); font-weight: 600; }
+
+  .barre-basse {
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+  .bouton-lien {
+    background: none;
+    border: none;
+    color: var(--texte-att);
+    text-decoration: underline;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* Écran de session */
+  .entete-session {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--texte-att);
+    margin-bottom: 0.6rem;
+  }
+  .piste-chrono {
+    height: 10px;
+    background: var(--bordure);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+  }
+  .barre-chrono {
+    height: 100%;
+    width: 100%;
+    background: var(--accent);
+  }
+  .zone-question {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 40vh;
+  }
+  .enonce {
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-bottom: 2rem;
+    transition: color 0.15s ease;
+  }
+  .enonce.correct { color: var(--vert); }
+  .enonce.incorrect { color: var(--rouge); }
+  .reponse-correcte {
+    font-size: 1.6rem;
+    color: var(--texte-att);
+    min-height: 2.2rem;
+  }
+  .champ-reponse {
+    font-size: 2.6rem;
+    text-align: center;
+    width: 8rem;
+    padding: 0.3rem 0.5rem;
+    border: 3px solid var(--bordure);
+    border-radius: 10px;
+    font-family: inherit;
+  }
+  .champ-reponse:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  .bouton-valider {
+    font-size: 1.6rem;
+    padding: 0.5rem 1.6rem;
+    margin-left: 1rem;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+  .ligne-saisie { display: flex; align-items: center; justify-content: center; }
+  .choix-boutons { display: flex; gap: 1.2rem; }
+  .bouton-choix {
+    font-size: 3rem;
+    width: 6rem;
+    height: 4.2rem;
+    border-radius: 12px;
+    border: 3px solid var(--bordure);
+    background: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+  }
+  .bouton-choix:hover, .bouton-choix:focus-visible { border-color: var(--accent); outline: none; }
+
+  /* Écran de résultats */
+  .resultats {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.2rem;
+  }
+  .score-final { font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 700; }
+  .message-final { font-size: 1.7rem; }
+  .message-final.reussi { color: var(--vert); }
+  .message-final.a-revoir { color: var(--texte-att); }
+  .actions-resultats { display: flex; gap: 1rem; margin-top: 1rem; }
+  .bouton-principal {
+    font-size: 1.3rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .bouton-secondaire {
+    font-size: 1.3rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 10px;
+    border: 2px solid var(--bordure);
+    background: #fff;
+    color: var(--texte);
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fond: #14171a;
+      --texte: #f2f3f4;
+      --texte-att: #a6adb4;
+      --bordure: #3a3f45;
+      --fond-carte: #1d2124;
+      --accent: #4d8fd6;
+    }
+    .champ-reponse, .bouton-choix, .bouton-secondaire { background: #1d2124; color: var(--texte); }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ==========================================================================
+   Générateurs d'items — généré depuis generateurs.mjs (ne pas éditer ici)
+   ========================================================================== */
+__GENERATEURS__
+
+/* ==========================================================================
+   Application
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var CLE_PROGRESSION = 'ceintures-cm2-progress-v1';
+  var NB_QUESTIONS = 10;
+  var SEUIL_REUSSITE = 8;
+  var TEMPS_LIMITE = { 1: 12, 2: 10, 3: 8, 4: 14, 5: 15, 6: 16, 7: 18, 8: 20 };
+
+  var app = document.getElementById('app');
+
+  function chargerProgression() {
+    try {
+      return JSON.parse(localStorage.getItem(CLE_PROGRESSION)) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function sauverProgression(progression) {
+    localStorage.setItem(CLE_PROGRESSION, JSON.stringify(progression));
+  }
+
+  var progression = chargerProgression();
+
+  var session = null; // { numero, items, index, scores, timeoutId }
+
+  function el(tag, props, enfants) {
+    var node = document.createElement(tag);
+    if (props) {
+      Object.keys(props).forEach(function (k) {
+        if (k === 'class') node.className = props[k];
+        else if (k === 'text') node.textContent = props[k];
+        else if (k.indexOf('on') === 0 && typeof props[k] === 'function') node.addEventListener(k.slice(2), props[k]);
+        else node.setAttribute(k, props[k]);
+      });
+    }
+    (enfants || []).forEach(function (c) { if (c) node.appendChild(c); });
+    return node;
+  }
+
+  function vider(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+
+  // --------------------------------------------------------------------
+  // Écran d'accueil
+  // --------------------------------------------------------------------
+
+  function afficherAccueil() {
+    session = null;
+    vider(app);
+    app.appendChild(el('h1', { text: 'Ceintures de calcul mental' }));
+    app.appendChild(el('p', { class: 'sous-titre', text: 'CM2 — 8 ceintures pour progresser, sans connexion' }));
+
+    var grille = el('div', { class: 'grille-ceintures' });
+    CEINTURES.forEach(function (ceinture) {
+      var info = progression[ceinture.numero];
+      var statut = el('div', { class: 'carte-statut' + (info && info.valide ? ' valide' : ''), text: info ? (info.valide ? '✓ Validée — meilleur score ' + info.meilleurScore + '/' + NB_QUESTIONS : 'Meilleur score : ' + info.meilleurScore + '/' + NB_QUESTIONS) : 'Pas encore tentée' });
+      var pastille = el('div', { class: 'pastille', text: String(ceinture.numero), style: 'background:' + ceinture.couleur + ';color:' + ceinture.texte + ';' });
+      var carte = el('button', { class: 'carte-ceinture', type: 'button', onclick: function () { demarrerSession(ceinture.numero); } }, [
+        pastille,
+        el('div', { class: 'carte-info' }, [
+          el('div', { class: 'carte-nom', text: 'Ceinture ' + ceinture.nom }),
+          statut,
+        ]),
+      ]);
+      grille.appendChild(carte);
+    });
+    app.appendChild(grille);
+
+    app.appendChild(el('div', { class: 'barre-basse' }, [
+      el('button', { class: 'bouton-lien', type: 'button', onclick: reinitialiserProgression, text: 'Réinitialiser la progression' }),
+    ]));
+  }
+
+  function reinitialiserProgression() {
+    if (window.confirm('Effacer toute la progression enregistrée sur cet appareil ?')) {
+      progression = {};
+      sauverProgression(progression);
+      afficherAccueil();
+    }
+  }
+
+  // --------------------------------------------------------------------
+  // Écran de session
+  // --------------------------------------------------------------------
+
+  function demarrerSession(numero) {
+    var items = [];
+    for (var i = 0; i < NB_QUESTIONS; i++) items.push(genererItem(numero));
+    session = { numero: numero, items: items, index: 0, scores: [], timeoutId: null };
+    afficherQuestion();
+  }
+
+  function ceintureCourante() { return CEINTURES[session.numero - 1]; }
+
+  function afficherQuestion() {
+    vider(app);
+    var ceinture = ceintureCourante();
+    var item = session.items[session.index];
+
+    var entete = el('div', { class: 'entete-session' }, [
+      el('span', { text: 'Ceinture ' + ceinture.nom }),
+      el('span', { text: 'Question ' + (session.index + 1) + ' / ' + NB_QUESTIONS }),
+    ]);
+    app.appendChild(entete);
+
+    var barreChrono = el('div', { class: 'barre-chrono' });
+    app.appendChild(el('div', { class: 'piste-chrono' }, [barreChrono]));
+
+    var enonce = el('div', { class: 'enonce', text: item.enonce });
+    var reponseAffichee = el('div', { class: 'reponse-correcte' });
+    var zone = el('div', { class: 'zone-question' }, [enonce, reponseAffichee]);
+
+    var saisie;
+    if (item.type === 'choix') {
+      saisie = el('div', { class: 'choix-boutons' });
+      item.choix.forEach(function (symbole) {
+        saisie.appendChild(el('button', {
+          class: 'bouton-choix',
+          type: 'button',
+          text: symbole,
+          onclick: function () { valider(symbole, item, enonce, reponseAffichee); },
+        }));
+      });
+    } else {
+      var champ = el('input', { class: 'champ-reponse', type: 'text', inputmode: 'decimal', autocomplete: 'off' });
+      var boutonValider = el('button', { class: 'bouton-valider', type: 'button', text: 'Valider', onclick: function () { valider(champ.value, item, enonce, reponseAffichee); } });
+      champ.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') valider(champ.value, item, enonce, reponseAffichee);
+      });
+      saisie = el('div', { class: 'ligne-saisie' }, [champ, boutonValider]);
+    }
+    zone.appendChild(saisie);
+    app.appendChild(zone);
+
+    if (item.type !== 'choix') {
+      setTimeout(function () { var c = app.querySelector('.champ-reponse'); if (c) c.focus(); }, 0);
+    }
+
+    var duree = TEMPS_LIMITE[ceinture.numero] || 15;
+    barreChrono.style.transition = 'none';
+    barreChrono.style.width = '100%';
+    // Forcer le recalcul de style avant de démarrer la transition.
+    void barreChrono.offsetWidth;
+    barreChrono.style.transition = 'width ' + duree + 's linear';
+    barreChrono.style.width = '0%';
+
+    session.dejaValide = false;
+    session.timeoutId = setTimeout(function () {
+      valider('', item, enonce, reponseAffichee, true);
+    }, duree * 1000);
+  }
+
+  function valider(valeur, item, enonce, reponseAffichee, tempsEcoule) {
+    if (session.dejaValide) return;
+    session.dejaValide = true;
+    clearTimeout(session.timeoutId);
+
+    var correct = !tempsEcoule && checkAnswer(item, valeur);
+    session.scores.push(correct ? 1 : 0);
+
+    var boutons = app.querySelectorAll('.bouton-choix, .bouton-valider, .champ-reponse');
+    boutons.forEach(function (b) { b.disabled = true; });
+
+    enonce.classList.add(correct ? 'correct' : 'incorrect');
+    if (!correct) {
+      reponseAffichee.textContent = tempsEcoule ? 'Temps écoulé — réponse : ' + item.reponse : 'Réponse : ' + item.reponse;
+    } else {
+      reponseAffichee.textContent = '✓';
+    }
+
+    setTimeout(function () {
+      session.index++;
+      if (session.index < NB_QUESTIONS) {
+        afficherQuestion();
+      } else {
+        afficherResultats();
+      }
+    }, correct ? 500 : 1400);
+  }
+
+  // --------------------------------------------------------------------
+  // Écran de résultats
+  // --------------------------------------------------------------------
+
+  function afficherResultats() {
+    var ceinture = ceintureCourante();
+    var score = session.scores.reduce(function (a, b) { return a + b; }, 0);
+    var reussi = score >= SEUIL_REUSSITE;
+
+    var info = progression[ceinture.numero] || { meilleurScore: 0, valide: false };
+    info.meilleurScore = Math.max(info.meilleurScore, score);
+    if (reussi) info.valide = true;
+    progression[ceinture.numero] = info;
+    sauverProgression(progression);
+
+    vider(app);
+    var suivante = CEINTURES[ceinture.numero]; // numero suivant (index = numero)
+    app.appendChild(el('div', { class: 'resultats' }, [
+      el('div', { class: 'sous-titre', text: 'Ceinture ' + ceinture.nom }),
+      el('div', { class: 'score-final', text: score + ' / ' + NB_QUESTIONS }),
+      el('div', {
+        class: 'message-final ' + (reussi ? 'reussi' : 'a-revoir'),
+        text: reussi ? 'Ceinture obtenue !' : 'Pas encore — il faut ' + SEUIL_REUSSITE + '/' + NB_QUESTIONS + ' pour valider.',
+      }),
+      el('div', { class: 'actions-resultats' }, [
+        el('button', { class: 'bouton-secondaire', type: 'button', text: 'Retour à l’accueil', onclick: afficherAccueil }),
+        el('button', { class: 'bouton-principal', type: 'button', text: 'Recommencer', onclick: function () { demarrerSession(ceinture.numero); } }),
+        suivante ? el('button', { class: 'bouton-principal', type: 'button', text: 'Ceinture suivante', onclick: function () { demarrerSession(suivante.numero); } }) : null,
+      ]),
+    ]));
+  }
+
+  afficherAccueil();
+})();
+</script>
+</body>
+</html>
