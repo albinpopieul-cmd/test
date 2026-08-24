@@ -17,11 +17,13 @@ function inline(cheminModule) {
 
 const codeGenerateurs = inline('./generateurs.mjs');
 const codeStockage = inline('./stockage.mjs');
+const codeBadges = inline('./badges.mjs');
 const gabarit = readFileSync(new URL('./ceintures.template.html', import.meta.url), 'utf8');
 
 const sortie = gabarit
   .replace('__GENERATEURS__', codeGenerateurs)
-  .replace('__STOCKAGE__', codeStockage);
+  .replace('__STOCKAGE__', codeStockage)
+  .replace('__BADGES__', codeBadges);
 
 writeFileSync(new URL('./ceintures.html', import.meta.url), sortie);
 console.log('ceintures.html généré (' + sortie.length + ' octets).');

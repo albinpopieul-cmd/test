@@ -6,20 +6,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
   :root {
-    --fond: #ffffff;
-    --texte: #14171a;
-    --texte-att: #5a6169;
-    --bordure: #d8dce0;
-    --accent: #1f5fa8;
-    --vert: #1f8a3d;
-    --rouge: #c0342a;
-    --fond-carte: #f6f7f8;
+    --fond: #eef3fb;
+    --fond-degrade: linear-gradient(160deg, #eaf1fd 0%, #fdf5e6 100%);
+    --texte: #16202e;
+    --texte-att: #5c6a7a;
+    --bordure: #d7e0ec;
+    --accent: #2f6fed;
+    --accent-2: #8a4fe8;
+    --degrade-accent: linear-gradient(135deg, var(--accent), var(--accent-2));
+    --vert: #159a4e;
+    --rouge: #dc2626;
+    --or: #e8a30d;
+    --fond-carte: #ffffff;
+    --ombre: 0 6px 18px rgba(29, 45, 82, 0.1);
+    --ombre-hover: 0 10px 26px rgba(29, 45, 82, 0.16);
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0;
     padding: 0;
-    background: var(--fond);
+    background: var(--fond-degrade);
+    background-attachment: fixed;
     color: var(--texte);
     font-family: "Segoe UI", Verdana, Arial, sans-serif;
     height: 100%;
@@ -72,23 +79,30 @@
   .bouton-principal {
     font-size: 1.3rem;
     padding: 0.7rem 1.6rem;
-    border-radius: 10px;
+    border-radius: 12px;
     border: none;
-    background: var(--accent);
+    background: var(--degrade-accent);
     color: #fff;
     cursor: pointer;
     font-family: inherit;
+    font-weight: 600;
+    box-shadow: 0 6px 16px rgba(47, 111, 237, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
+  .bouton-principal:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(47, 111, 237, 0.4); }
   .bouton-secondaire {
     font-size: 1.3rem;
     padding: 0.7rem 1.6rem;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 2px solid var(--bordure);
-    background: #fff;
+    background: var(--fond-carte);
     color: var(--texte);
     cursor: pointer;
     font-family: inherit;
+    font-weight: 600;
+    transition: transform 0.15s ease, border-color 0.15s ease;
   }
+  .bouton-secondaire:hover { transform: translateY(-2px); border-color: var(--accent); }
   .bouton-danger {
     font-size: 1rem;
     padding: 0.5rem 1rem;
@@ -109,16 +123,23 @@
   }
   .bouton-eleve {
     font-size: 1.4rem;
-    font-weight: 600;
+    font-weight: 700;
     padding: 1.3rem 1rem;
-    border-radius: 12px;
+    border-radius: 14px;
     border: 2px solid var(--bordure);
     background: var(--fond-carte);
     cursor: pointer;
     font-family: inherit;
     color: var(--texte);
+    box-shadow: var(--ombre);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
   }
-  .bouton-eleve:hover, .bouton-eleve:focus-visible { border-color: var(--accent); outline: none; }
+  .bouton-eleve:hover, .bouton-eleve:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+    transform: translateY(-3px);
+    box-shadow: var(--ombre-hover);
+  }
   .message-vide {
     text-align: center;
     color: var(--texte-att);
@@ -128,6 +149,36 @@
   .barre-basse { text-align: center; margin-top: auto; padding-top: 2rem; }
 
   /* Ceintures (par élève) */
+  .resume-progres {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    background: var(--fond-carte);
+    border-radius: 14px;
+    box-shadow: var(--ombre);
+    padding: 1rem 1.3rem;
+    margin-bottom: 1.6rem;
+  }
+  .resume-progres .texte-resume { font-size: 1.15rem; font-weight: 600; }
+  .bouton-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #ffd76a, var(--or));
+    color: #5a3d00;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 5px 14px rgba(232, 163, 13, 0.4);
+    transition: transform 0.15s ease;
+  }
+  .bouton-badges:hover { transform: translateY(-2px); }
   .grille-ceintures {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -139,19 +190,27 @@
     gap: 1rem;
     background: var(--fond-carte);
     border: 2px solid var(--bordure);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 1.1rem 1.3rem;
     cursor: pointer;
     text-align: left;
     font-family: inherit;
     font-size: 1.15rem;
     color: var(--texte);
+    box-shadow: var(--ombre);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
   }
-  .carte-ceinture:hover, .carte-ceinture:focus-visible { border-color: var(--accent); outline: none; }
+  .carte-ceinture:hover, .carte-ceinture:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+    transform: translateY(-3px);
+    box-shadow: var(--ombre-hover);
+  }
+  .carte-ceinture.valide { border-color: var(--vert); }
   .pastille {
     flex: none;
-    width: 3.4rem;
-    height: 3.4rem;
+    width: 3.6rem;
+    height: 3.6rem;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -159,12 +218,59 @@
     font-weight: 700;
     font-size: 1.4rem;
     border: 2px solid rgba(0,0,0,0.15);
+    box-shadow: inset 0 -6px 10px rgba(0,0,0,0.12), inset 0 4px 6px rgba(255,255,255,0.35), 0 3px 8px rgba(0,0,0,0.15);
   }
   .pastille.petite { width: 2.1rem; height: 2.1rem; font-size: 0.95rem; }
   .carte-info { flex: 1; }
   .carte-nom { font-weight: 700; font-size: 1.3rem; }
   .carte-statut { color: var(--texte-att); font-size: 1rem; margin-top: 0.15rem; }
   .carte-statut.valide { color: var(--vert); font-weight: 600; }
+
+  /* Badges */
+  .grille-badges {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.2rem;
+  }
+  .carte-badge {
+    background: var(--fond-carte);
+    border-radius: 16px;
+    box-shadow: var(--ombre);
+    padding: 1.2rem 1rem;
+    text-align: center;
+    border: 2px solid var(--bordure);
+  }
+  .carte-badge.obtenu {
+    border-color: var(--or);
+    background: linear-gradient(160deg, #fffdf6, #fff3d6);
+  }
+  .carte-badge.verrouille { opacity: 0.45; filter: grayscale(0.6); }
+  .icone-badge { font-size: 2.8rem; line-height: 1; margin-bottom: 0.5rem; }
+  .nom-badge { font-weight: 700; font-size: 1.05rem; }
+  .description-badge { color: var(--texte-att); font-size: 0.85rem; margin-top: 0.3rem; }
+
+  .bandeau-nouveaux-badges {
+    background: linear-gradient(135deg, #fff3d6, #ffe4a3);
+    border: 2px solid var(--or);
+    border-radius: 16px;
+    padding: 1.2rem 1.5rem;
+    margin-top: 1rem;
+    text-align: center;
+    animation: apparitionBadge 0.5s ease;
+  }
+  .bandeau-nouveaux-badges .titre-bandeau { font-weight: 700; font-size: 1.2rem; margin-bottom: 0.6rem; color: #5a3d00; }
+  .ligne-nouveaux-badges { display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; }
+  .nouveau-badge { display: flex; flex-direction: column; align-items: center; animation: rebondBadge 0.6s ease; }
+  .nouveau-badge .icone-badge { font-size: 3.2rem; }
+  @keyframes apparitionBadge {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes rebondBadge {
+    0% { transform: scale(0.3); opacity: 0; }
+    60% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); }
+  }
 
   /* Écran de session */
   .entete-session {
@@ -257,9 +363,10 @@
   .bloc {
     background: var(--fond-carte);
     border: 2px solid var(--bordure);
-    border-radius: 14px;
+    border-radius: 16px;
     padding: 1.3rem 1.5rem;
     margin-bottom: 1.5rem;
+    box-shadow: var(--ombre);
   }
   .bloc h2 { margin-top: 0; }
   .ligne-formulaire { display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; }
@@ -320,14 +427,21 @@
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --fond: #14171a;
+      --fond: #12161d;
+      --fond-degrade: linear-gradient(160deg, #10141b 0%, #1c1710 100%);
       --texte: #f2f3f4;
       --texte-att: #a6adb4;
-      --bordure: #3a3f45;
-      --fond-carte: #1d2124;
-      --accent: #4d8fd6;
+      --bordure: #343b45;
+      --fond-carte: #1c2129;
+      --accent: #6ea3f2;
+      --accent-2: #b28aff;
+      --ombre: 0 6px 18px rgba(0, 0, 0, 0.45);
+      --ombre-hover: 0 10px 26px rgba(0, 0, 0, 0.55);
     }
-    .champ-reponse, .bouton-choix, .bouton-secondaire, .champ-texte, .liste-classe li { background: #1d2124; color: var(--texte); }
+    .champ-reponse, .bouton-choix, .bouton-secondaire, .champ-texte, .liste-classe li { background: #1c2129; color: var(--texte); }
+    .carte-badge.obtenu { background: linear-gradient(160deg, #2a2213, #3a2e0f); }
+    .bandeau-nouveaux-badges { background: linear-gradient(135deg, #3a2e0f, #4a3a10); color: #ffe9b0; }
+    .bandeau-nouveaux-badges .titre-bandeau { color: #ffe9b0; }
   }
 </style>
 </head>
@@ -972,6 +1086,51 @@ function genererCSV(store) {
 }
 
 /* ==========================================================================
+   Système de badges — généré depuis badges.mjs
+   ========================================================================== */
+const BADGES = [
+  { id: 'ceinture-1', type: 'ceinture', numero: 1, nom: 'Blanche', description: 'Ceinture Blanche obtenue', icone: '🥋' },
+  { id: 'ceinture-2', type: 'ceinture', numero: 2, nom: 'Jaune', description: 'Ceinture Jaune obtenue', icone: '🥋' },
+  { id: 'ceinture-3', type: 'ceinture', numero: 3, nom: 'Orange', description: 'Ceinture Orange obtenue', icone: '🥋' },
+  { id: 'ceinture-4', type: 'ceinture', numero: 4, nom: 'Verte', description: 'Ceinture Verte obtenue', icone: '🥋' },
+  { id: 'ceinture-5', type: 'ceinture', numero: 5, nom: 'Bleue', description: 'Ceinture Bleue obtenue', icone: '🥋' },
+  { id: 'ceinture-6', type: 'ceinture', numero: 6, nom: 'Marron', description: 'Ceinture Marron obtenue', icone: '🥋' },
+  { id: 'ceinture-7', type: 'ceinture', numero: 7, nom: 'Noire', description: 'Ceinture Noire obtenue', icone: '🥋' },
+  { id: 'ceinture-8', type: 'ceinture', numero: 8, nom: 'Rouge', description: 'Ceinture Rouge obtenue', icone: '🥋' },
+  { id: 'premier-coup', type: 'bonus', nom: 'Premier coup', description: 'Une ceinture validée dès la première tentative', icone: '🎯' },
+  { id: 'sans-faute', type: 'bonus', nom: 'Sans-faute', description: 'Un sans-faute sur une ceinture', icone: '⭐' },
+  { id: 'perseverant', type: 'bonus', nom: 'Persévérant', description: '30 tentatives cumulées, on ne lâche rien', icone: '💪' },
+  { id: 'toutes-ceintures', type: 'bonus', nom: 'Maître du calcul mental', description: 'Les 8 ceintures obtenues', icone: '🏆' },
+];
+
+const SEUIL_PERSEVERANCE = 30;
+
+function calculerBadgesObtenus(donneesEleve, ceintures, nbQuestions) {
+  donneesEleve = donneesEleve || {};
+  const obtenus = new Set();
+  let toutesValidees = ceintures.length > 0;
+  let totalTentatives = 0;
+
+  ceintures.forEach((c) => {
+    const info = donneesEleve[c.numero];
+    if (!info) { toutesValidees = false; return; }
+    totalTentatives += info.tentatives || 0;
+    if (info.valide) {
+      obtenus.add('ceinture-' + c.numero);
+      if (info.meilleurScore === nbQuestions) obtenus.add('sans-faute');
+      if (info.tentatives === 1) obtenus.add('premier-coup');
+    } else {
+      toutesValidees = false;
+    }
+  });
+
+  if (toutesValidees) obtenus.add('toutes-ceintures');
+  if (totalTentatives >= SEUIL_PERSEVERANCE) obtenus.add('perseverant');
+
+  return BADGES.filter((b) => obtenus.has(b.id));
+}
+
+/* ==========================================================================
    Application
    ========================================================================== */
 (function () {
@@ -1079,8 +1238,20 @@ function genererCSV(store) {
     ]));
     app.appendChild(el('p', { class: 'sous-titre', text: '8 ceintures pour progresser en calcul mental' }));
 
-    var grille = el('div', { class: 'grille-ceintures' });
     var donneesEleve = store.eleves[eleveCourant] || {};
+    var nbValidees = CEINTURES.filter(function (c) { return donneesEleve[c.numero] && donneesEleve[c.numero].valide; }).length;
+    var badgesObtenus = calculerBadgesObtenus(donneesEleve, CEINTURES, NB_QUESTIONS);
+
+    app.appendChild(el('div', { class: 'resume-progres' }, [
+      el('div', { class: 'texte-resume', text: nbValidees + ' / ' + CEINTURES.length + ' ceintures obtenues' }),
+      el('button', {
+        class: 'bouton-badges',
+        type: 'button',
+        onclick: afficherBadges,
+      }, [document.createTextNode('🏅 Mes badges (' + badgesObtenus.length + '/' + BADGES.length + ')')]),
+    ]));
+
+    var grille = el('div', { class: 'grille-ceintures' });
     CEINTURES.forEach(function (ceinture) {
       var info = donneesEleve[ceinture.numero];
       var statut = el('div', {
@@ -1088,7 +1259,11 @@ function genererCSV(store) {
         text: info ? (info.valide ? '✓ Validée — meilleur score ' + info.meilleurScore + '/' + NB_QUESTIONS : 'Meilleur score : ' + info.meilleurScore + '/' + NB_QUESTIONS) : 'Pas encore tentée',
       });
       var pastille = el('div', { class: 'pastille', text: String(ceinture.numero), style: 'background:' + ceinture.couleur + ';color:' + ceinture.texte + ';' });
-      var carte = el('button', { class: 'carte-ceinture', type: 'button', onclick: function () { demarrerSession(ceinture.numero); } }, [
+      var carte = el('button', {
+        class: 'carte-ceinture' + (info && info.valide ? ' valide' : ''),
+        type: 'button',
+        onclick: function () { demarrerSession(ceinture.numero); },
+      }, [
         pastille,
         el('div', { class: 'carte-info' }, [
           el('div', { class: 'carte-nom', text: 'Ceinture ' + ceinture.nom }),
@@ -1096,6 +1271,34 @@ function genererCSV(store) {
         ]),
       ]);
       grille.appendChild(carte);
+    });
+    app.appendChild(grille);
+  }
+
+  // --------------------------------------------------------------------
+  // Écran des badges
+  // --------------------------------------------------------------------
+
+  function afficherBadges() {
+    vider(app);
+    app.appendChild(el('div', { class: 'entete-ecran' }, [
+      el('h1', { text: 'Mes badges' }),
+      el('button', { class: 'bouton-lien', type: 'button', text: 'Retour', onclick: afficherCeintures }),
+    ]));
+
+    var donneesEleve = store.eleves[eleveCourant] || {};
+    var obtenus = calculerBadgesObtenus(donneesEleve, CEINTURES, NB_QUESTIONS);
+    var idsObtenus = obtenus.map(function (b) { return b.id; });
+    app.appendChild(el('p', { class: 'sous-titre', text: eleveCourant + ' — ' + obtenus.length + ' badge' + (obtenus.length > 1 ? 's' : '') + ' sur ' + BADGES.length }));
+
+    var grille = el('div', { class: 'grille-badges' });
+    BADGES.forEach(function (b) {
+      var obtenu = idsObtenus.indexOf(b.id) !== -1;
+      grille.appendChild(el('div', { class: 'carte-badge ' + (obtenu ? 'obtenu' : 'verrouille') }, [
+        el('div', { class: 'icone-badge', text: obtenu ? b.icone : '🔒' }),
+        el('div', { class: 'nom-badge', text: b.nom }),
+        el('div', { class: 'description-badge', text: b.description }),
+      ]));
     });
     app.appendChild(grille);
   }
@@ -1207,24 +1410,42 @@ function genererCSV(store) {
     var score = session.scores.reduce(function (a, b) { return a + b; }, 0);
     var reussi = score >= SEUIL_REUSSITE;
 
+    var donneesAvant = store.eleves[eleveCourant] || {};
+    var badgesAvant = calculerBadgesObtenus(donneesAvant, CEINTURES, NB_QUESTIONS).map(function (b) { return b.id; });
+
     store = enregistrerScore(store, eleveCourant, ceinture.numero, score, SEUIL_REUSSITE);
     sauverStore();
 
+    var badgesApres = calculerBadgesObtenus(store.eleves[eleveCourant], CEINTURES, NB_QUESTIONS);
+    var nouveauxBadges = badgesApres.filter(function (b) { return badgesAvant.indexOf(b.id) === -1; });
+
     vider(app);
     var suivante = CEINTURES[ceinture.numero];
-    app.appendChild(el('div', { class: 'resultats' }, [
+    var blocs = [
       el('div', { class: 'sous-titre', text: eleveCourant + ' — Ceinture ' + ceinture.nom }),
       el('div', { class: 'score-final', text: score + ' / ' + NB_QUESTIONS }),
       el('div', {
         class: 'message-final ' + (reussi ? 'reussi' : 'a-revoir'),
         text: reussi ? 'Ceinture obtenue !' : 'Pas encore — il faut ' + SEUIL_REUSSITE + '/' + NB_QUESTIONS + ' pour valider.',
       }),
-      el('div', { class: 'actions-resultats' }, [
-        el('button', { class: 'bouton-secondaire', type: 'button', text: 'Mes ceintures', onclick: afficherCeintures }),
-        el('button', { class: 'bouton-principal', type: 'button', text: 'Recommencer', onclick: function () { demarrerSession(ceinture.numero); } }),
-        suivante ? el('button', { class: 'bouton-principal', type: 'button', text: 'Ceinture suivante', onclick: function () { demarrerSession(suivante.numero); } }) : null,
-      ]),
+    ];
+    if (nouveauxBadges.length > 0) {
+      blocs.push(el('div', { class: 'bandeau-nouveaux-badges' }, [
+        el('div', { class: 'titre-bandeau', text: '🎉 Nouveau' + (nouveauxBadges.length > 1 ? 'x badges' : ' badge') + ' débloqué' + (nouveauxBadges.length > 1 ? 's' : '') + ' !' }),
+        el('div', { class: 'ligne-nouveaux-badges' }, nouveauxBadges.map(function (b) {
+          return el('div', { class: 'nouveau-badge' }, [
+            el('div', { class: 'icone-badge', text: b.icone }),
+            el('div', { class: 'nom-badge', text: b.nom }),
+          ]);
+        })),
+      ]));
+    }
+    blocs.push(el('div', { class: 'actions-resultats' }, [
+      el('button', { class: 'bouton-secondaire', type: 'button', text: 'Mes ceintures', onclick: afficherCeintures }),
+      el('button', { class: 'bouton-principal', type: 'button', text: 'Recommencer', onclick: function () { demarrerSession(ceinture.numero); } }),
+      suivante ? el('button', { class: 'bouton-principal', type: 'button', text: 'Ceinture suivante', onclick: function () { demarrerSession(suivante.numero); } }) : null,
     ]));
+    app.appendChild(el('div', { class: 'resultats' }, blocs));
   }
 
   // --------------------------------------------------------------------
@@ -1339,7 +1560,7 @@ function genererCSV(store) {
       }
       var thead = el('tr', {}, [el('th', { class: 'nom-eleve', text: 'Élève' })].concat(
         CEINTURES.map(function (c) { return el('th', { text: c.numero + ' ' + c.nom }); })
-      ));
+      ).concat([el('th', { text: '🏅 Badges' })]));
       var lignes = [thead];
       noms.forEach(function (nom) {
         var donnees = store.eleves[nom] || {};
@@ -1355,6 +1576,8 @@ function genererCSV(store) {
             }));
           }
         });
+        var nbBadges = calculerBadgesObtenus(donnees, CEINTURES, NB_QUESTIONS).length;
+        cellules.push(el('td', { text: nbBadges + '/' + BADGES.length }));
         lignes.push(el('tr', {}, cellules));
       });
       zoneTableau.appendChild(el('table', { class: 'suivi' }, lignes));
