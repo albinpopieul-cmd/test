@@ -4,22 +4,31 @@
 <meta charset="utf-8">
 <title>Ceintures de calcul mental — CM2</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --fond: #eef3fb;
-    --fond-degrade: linear-gradient(160deg, #eaf1fd 0%, #fdf5e6 100%);
-    --texte: #16202e;
+    --fond-degrade: linear-gradient(160deg, #eef7ff 0%, #fff8e8 50%, #ffeef7 100%);
+    --texte: #1c2333;
     --texte-att: #5c6a7a;
     --bordure: #d7e0ec;
-    --accent: #2f6fed;
-    --accent-2: #8a4fe8;
+    --accent: #6c5ce7;
+    --accent-2: #ff5da2;
     --degrade-accent: linear-gradient(135deg, var(--accent), var(--accent-2));
-    --vert: #159a4e;
-    --rouge: #dc2626;
-    --or: #e8a30d;
+    --vert: #12a454;
+    --rouge: #ef4444;
+    --or: #f5a623;
     --fond-carte: #ffffff;
     --ombre: 0 6px 18px rgba(29, 45, 82, 0.1);
     --ombre-hover: 0 10px 26px rgba(29, 45, 82, 0.16);
+    --candy-1: #ff5da2;
+    --candy-2: #6c5ce7;
+    --candy-3: #00c2a8;
+    --candy-4: #ffb703;
+    --candy-5: #06aed5;
+    --candy-6: #ff8c42;
   }
   * { box-sizing: border-box; }
   html, body {
@@ -28,7 +37,7 @@
     background: var(--fond-degrade);
     background-attachment: fixed;
     color: var(--texte);
-    font-family: "Segoe UI", Verdana, Arial, sans-serif;
+    font-family: "Fredoka", "Comic Sans MS", "Segoe UI", Verdana, Arial, sans-serif;
     height: 100%;
   }
   body {
@@ -47,10 +56,11 @@
   }
   h1 {
     font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    font-weight: 700;
     text-align: center;
     margin: 0.5rem 0 0.2rem;
   }
-  h2 { font-size: 1.6rem; margin: 0 0 1rem; }
+  h2 { font-size: 1.6rem; font-weight: 700; margin: 0 0 1rem; }
   .sous-titre {
     text-align: center;
     color: var(--texte-att);
@@ -89,7 +99,8 @@
     box-shadow: 0 6px 16px rgba(47, 111, 237, 0.35);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
-  .bouton-principal:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(47, 111, 237, 0.4); }
+  .bouton-principal:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 10px 22px rgba(47, 111, 237, 0.4); }
+  .bouton-principal:active { transform: scale(0.95); }
   .bouton-secondaire {
     font-size: 1.3rem;
     padding: 0.7rem 1.6rem;
@@ -102,7 +113,8 @@
     font-weight: 600;
     transition: transform 0.15s ease, border-color 0.15s ease;
   }
-  .bouton-secondaire:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .bouton-secondaire:hover { transform: translateY(-2px) scale(1.03); border-color: var(--accent); }
+  .bouton-secondaire:active { transform: scale(0.95); }
   .bouton-danger {
     font-size: 1rem;
     padding: 0.5rem 1rem;
@@ -125,8 +137,8 @@
     font-size: 1.4rem;
     font-weight: 700;
     padding: 1.3rem 1rem;
-    border-radius: 14px;
-    border: 2px solid var(--bordure);
+    border-radius: 18px;
+    border: 3px solid var(--bordure);
     background: var(--fond-carte);
     cursor: pointer;
     font-family: inherit;
@@ -134,12 +146,18 @@
     box-shadow: var(--ombre);
     transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
   }
+  .bouton-eleve:nth-child(6n+1) { border-color: var(--candy-1); }
+  .bouton-eleve:nth-child(6n+2) { border-color: var(--candy-2); }
+  .bouton-eleve:nth-child(6n+3) { border-color: var(--candy-3); }
+  .bouton-eleve:nth-child(6n+4) { border-color: var(--candy-4); }
+  .bouton-eleve:nth-child(6n+5) { border-color: var(--candy-5); }
+  .bouton-eleve:nth-child(6n+6) { border-color: var(--candy-6); }
   .bouton-eleve:hover, .bouton-eleve:focus-visible {
-    border-color: var(--accent);
     outline: none;
-    transform: translateY(-3px);
+    transform: translateY(-3px) rotate(-1deg);
     box-shadow: var(--ombre-hover);
   }
+  .bouton-eleve:active { transform: scale(0.95); }
   .message-vide {
     text-align: center;
     color: var(--texte-att);
@@ -147,6 +165,78 @@
     padding: 2rem 1rem;
   }
   .barre-basse { text-align: center; margin-top: auto; padding-top: 2rem; }
+
+  /* Mascotte & bulle de dialogue */
+  .zone-mascotte {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .mascotte {
+    font-size: 4rem;
+    line-height: 1;
+    animation: flotterMascotte 3.5s ease-in-out infinite;
+  }
+  .bulle-dialogue {
+    position: relative;
+    background: #fff;
+    border: 3px solid var(--accent);
+    border-radius: 18px;
+    padding: 0.8rem 1.3rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    max-width: 22rem;
+    box-shadow: var(--ombre);
+  }
+  .bulle-dialogue::after {
+    content: '';
+    position: absolute;
+    left: -0.7rem;
+    bottom: 1rem;
+    border: 0.6rem solid transparent;
+    border-right-color: var(--accent);
+    border-left: 0;
+  }
+  .bulle-dialogue::before {
+    content: '';
+    position: absolute;
+    left: -0.5rem;
+    bottom: 1.05rem;
+    border: 0.5rem solid transparent;
+    border-right-color: #fff;
+    border-left: 0;
+    z-index: 1;
+  }
+  @keyframes flotterMascotte {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-8px) rotate(3deg); }
+  }
+
+  /* Confettis */
+  .zone-confettis {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 1000;
+  }
+  .confetti {
+    position: absolute;
+    top: -10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    animation: tomberConfetti 2.2s ease-in forwards;
+  }
+  @keyframes tomberConfetti {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+  }
 
   /* Ceintures (par élève) */
   .resume-progres {
@@ -178,7 +268,8 @@
     box-shadow: 0 5px 14px rgba(232, 163, 13, 0.4);
     transition: transform 0.15s ease;
   }
-  .bouton-badges:hover { transform: translateY(-2px); }
+  .bouton-badges:hover { transform: translateY(-2px) rotate(-1deg); }
+  .bouton-badges:active { transform: scale(0.95); }
   .grille-ceintures {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -203,9 +294,10 @@
   .carte-ceinture:hover, .carte-ceinture:focus-visible {
     border-color: var(--accent);
     outline: none;
-    transform: translateY(-3px);
+    transform: translateY(-3px) rotate(-0.5deg);
     box-shadow: var(--ombre-hover);
   }
+  .carte-ceinture:active { transform: scale(0.97); }
   .carte-ceinture.valide { border-color: var(--vert); }
   .pastille {
     flex: none;
@@ -322,26 +414,35 @@
     font-size: 1.6rem;
     padding: 0.5rem 1.6rem;
     margin-left: 1rem;
-    border-radius: 10px;
+    border-radius: 14px;
     border: none;
-    background: var(--accent);
+    background: var(--degrade-accent);
     color: #fff;
+    font-weight: 700;
     cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 6px 14px rgba(108, 92, 231, 0.35);
+    transition: transform 0.15s ease;
   }
+  .bouton-valider:hover { transform: translateY(-2px) scale(1.03); }
+  .bouton-valider:active { transform: scale(0.95); }
   .ligne-saisie { display: flex; align-items: center; justify-content: center; }
   .choix-boutons { display: flex; gap: 1.2rem; }
   .bouton-choix {
     font-size: 3rem;
     width: 6rem;
     height: 4.2rem;
-    border-radius: 12px;
+    border-radius: 16px;
     border: 3px solid var(--bordure);
     background: #fff;
     cursor: pointer;
     font-family: inherit;
     font-weight: 700;
+    box-shadow: var(--ombre);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
   }
-  .bouton-choix:hover, .bouton-choix:focus-visible { border-color: var(--accent); outline: none; }
+  .bouton-choix:hover, .bouton-choix:focus-visible { border-color: var(--accent); outline: none; transform: translateY(-2px) scale(1.05); box-shadow: var(--ombre-hover); }
+  .bouton-choix:active { transform: scale(0.93); }
 
   /* Écran de résultats */
   .resultats {
@@ -442,6 +543,8 @@
     .carte-badge.obtenu { background: linear-gradient(160deg, #2a2213, #3a2e0f); }
     .bandeau-nouveaux-badges { background: linear-gradient(135deg, #3a2e0f, #4a3a10); color: #ffe9b0; }
     .bandeau-nouveaux-badges .titre-bandeau { color: #ffe9b0; }
+    .bulle-dialogue { background: #1c2129; }
+    .bulle-dialogue::before { border-right-color: #1c2129; }
   }
 </style>
 </head>
@@ -527,6 +630,50 @@ __BADGES__
     return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
   }
 
+  var MASCOTTE = '🦊';
+  var PHRASES_ACCUEIL = [
+    'Prêt à devenir un champion du calcul mental ?',
+    'Salut ! On s’entraîne un peu ?',
+    'Choisis ton prénom pour commencer l’aventure !',
+  ];
+  var PHRASES_REUSSITE = [
+    'Bravo, tu assures grave !',
+    'Trop fort, ceinture méritée !',
+    'Champion du calcul mental !',
+    'Tu progresses à vitesse grand V !',
+    'Génial, continue comme ça !',
+  ];
+  var PHRASES_ENCOURAGEMENT = [
+    'Pas grave, on retente !',
+    'Tu y es presque, courage !',
+    'Chaque essai te rend plus fort !',
+    'On ne lâche rien, tu vas y arriver !',
+  ];
+
+  function tirerPhrase(liste) { return liste[Math.floor(Math.random() * liste.length)]; }
+
+  function creerMascotte(message) {
+    return el('div', { class: 'zone-mascotte' }, [
+      el('div', { class: 'mascotte', text: MASCOTTE }),
+      el('div', { class: 'bulle-dialogue', text: message }),
+    ]);
+  }
+
+  var COULEURS_CONFETTIS = ['#ff5da2', '#6c5ce7', '#00c2a8', '#ffb703', '#06aed5', '#ff8c42'];
+
+  function lancerConfettis() {
+    var zone = el('div', { class: 'zone-confettis' });
+    for (var i = 0; i < 40; i++) {
+      var piece = el('div', { class: 'confetti' });
+      piece.style.left = Math.round(Math.random() * 100) + '%';
+      piece.style.background = COULEURS_CONFETTIS[i % COULEURS_CONFETTIS.length];
+      piece.style.animationDelay = (Math.random() * 0.5) + 's';
+      zone.appendChild(piece);
+    }
+    document.body.appendChild(zone);
+    setTimeout(function () { if (zone.parentNode) zone.parentNode.removeChild(zone); }, 3000);
+  }
+
   // --------------------------------------------------------------------
   // Écran d'identification (choix de l'élève)
   // --------------------------------------------------------------------
@@ -537,6 +684,7 @@ __BADGES__
     vider(app);
     app.appendChild(el('h1', { text: 'Ceintures de calcul mental' }));
     app.appendChild(el('p', { class: 'sous-titre', text: 'CM2 — Qui es-tu ?' }));
+    app.appendChild(creerMascotte(tirerPhrase(PHRASES_ACCUEIL)));
 
     if (store.roster.length === 0) {
       app.appendChild(el('p', { class: 'message-vide', text: 'Aucun élève n’est encore configuré. Rendez-vous dans l’Espace enseignant pour ajouter la classe.' }));
@@ -754,7 +902,9 @@ __BADGES__
 
     vider(app);
     var suivante = CEINTURES[ceinture.numero];
+    var phraseMascotte = reussi ? tirerPhrase(PHRASES_REUSSITE) : tirerPhrase(PHRASES_ENCOURAGEMENT);
     var blocs = [
+      creerMascotte(phraseMascotte),
       el('div', { class: 'sous-titre', text: eleveCourant + ' — Ceinture ' + ceinture.nom }),
       el('div', { class: 'score-final', text: score + ' / ' + NB_QUESTIONS }),
       el('div', {
@@ -778,7 +928,9 @@ __BADGES__
       el('button', { class: 'bouton-principal', type: 'button', text: 'Recommencer', onclick: function () { demarrerSession(ceinture.numero); } }),
       suivante ? el('button', { class: 'bouton-principal', type: 'button', text: 'Ceinture suivante', onclick: function () { demarrerSession(suivante.numero); } }) : null,
     ]));
-    app.appendChild(el('div', { class: 'resultats' }, blocs));
+    var resultatsDiv = el('div', { class: 'resultats' }, blocs);
+    app.appendChild(resultatsDiv);
+    if (nouveauxBadges.length > 0) lancerConfettis();
   }
 
   // --------------------------------------------------------------------
