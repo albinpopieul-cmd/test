@@ -1,0 +1,1687 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Ceintures de fractions — CM1-CM2</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --fond: #eef3fb;
+    --fond-degrade: linear-gradient(160deg, #eef7ff 0%, #fff8e8 50%, #ffeef7 100%);
+    --texte: #1c2333;
+    --texte-att: #5c6a7a;
+    --bordure: #d7e0ec;
+    --accent: #6c5ce7;
+    --accent-2: #ff5da2;
+    --degrade-accent: linear-gradient(135deg, var(--accent), var(--accent-2));
+    --vert: #12a454;
+    --rouge: #ef4444;
+    --or: #f5a623;
+    --fond-carte: #ffffff;
+    --ombre: 0 6px 18px rgba(29, 45, 82, 0.1);
+    --ombre-hover: 0 10px 26px rgba(29, 45, 82, 0.16);
+    --candy-1: #ff5da2;
+    --candy-2: #6c5ce7;
+    --candy-3: #00c2a8;
+    --candy-4: #ffb703;
+    --candy-5: #06aed5;
+    --candy-6: #ff8c42;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--fond-degrade);
+    background-attachment: fixed;
+    color: var(--texte);
+    font-family: "Fredoka", "Comic Sans MS", "Segoe UI", Verdana, Arial, sans-serif;
+    height: 100%;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  #app {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 3rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+    font-weight: 700;
+    text-align: center;
+    margin: 0.5rem 0 0.2rem;
+  }
+  h2 { font-size: 1.6rem; font-weight: 700; margin: 0 0 1rem; }
+  .sous-titre {
+    text-align: center;
+    color: var(--texte-att);
+    font-size: 1.3rem;
+    margin: 0 0 2rem;
+  }
+  .entete-ecran {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+  }
+  .entete-ecran h1 { margin: 0; text-align: left; }
+
+  /* Boutons génériques */
+  .bouton-lien {
+    background: none;
+    border: none;
+    color: var(--texte-att);
+    text-decoration: underline;
+    font-size: 1rem;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 0.4rem 0;
+  }
+  .bouton-principal {
+    font-size: 1.3rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 12px;
+    border: none;
+    background: var(--degrade-accent);
+    color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    box-shadow: 0 6px 16px rgba(47, 111, 237, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .bouton-principal:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 10px 22px rgba(47, 111, 237, 0.4); }
+  .bouton-principal:active { transform: scale(0.95); }
+  .bouton-secondaire {
+    font-size: 1.3rem;
+    padding: 0.7rem 1.6rem;
+    border-radius: 12px;
+    border: 2px solid var(--bordure);
+    background: var(--fond-carte);
+    color: var(--texte);
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .bouton-secondaire:hover { transform: translateY(-2px) scale(1.03); border-color: var(--accent); }
+  .bouton-secondaire:active { transform: scale(0.95); }
+  .bouton-danger {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 2px solid var(--rouge);
+    background: #fff;
+    color: var(--rouge);
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  /* Identification élève */
+  .grille-eleves {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .bouton-eleve {
+    font-size: 1.4rem;
+    font-weight: 700;
+    padding: 1.3rem 1rem;
+    border-radius: 18px;
+    border: 3px solid var(--bordure);
+    background: var(--fond-carte);
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--texte);
+    box-shadow: var(--ombre);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .bouton-eleve:nth-child(6n+1) { border-color: var(--candy-1); }
+  .bouton-eleve:nth-child(6n+2) { border-color: var(--candy-2); }
+  .bouton-eleve:nth-child(6n+3) { border-color: var(--candy-3); }
+  .bouton-eleve:nth-child(6n+4) { border-color: var(--candy-4); }
+  .bouton-eleve:nth-child(6n+5) { border-color: var(--candy-5); }
+  .bouton-eleve:nth-child(6n+6) { border-color: var(--candy-6); }
+  .bouton-eleve:hover, .bouton-eleve:focus-visible {
+    outline: none;
+    transform: translateY(-3px) rotate(-1deg);
+    box-shadow: var(--ombre-hover);
+  }
+  .bouton-eleve:active { transform: scale(0.95); }
+  .message-vide {
+    text-align: center;
+    color: var(--texte-att);
+    font-size: 1.2rem;
+    padding: 2rem 1rem;
+  }
+  .barre-basse { text-align: center; margin-top: auto; padding-top: 2rem; }
+
+  /* Mascotte & bulle de dialogue */
+  .zone-mascotte {
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+  .mascotte {
+    font-size: 4rem;
+    line-height: 1;
+    animation: flotterMascotte 3.5s ease-in-out infinite;
+  }
+  .bulle-dialogue {
+    position: relative;
+    background: #fff;
+    border: 3px solid var(--accent);
+    border-radius: 18px;
+    padding: 0.8rem 1.3rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    max-width: 22rem;
+    box-shadow: var(--ombre);
+  }
+  .bulle-dialogue::after {
+    content: '';
+    position: absolute;
+    left: -0.7rem;
+    bottom: 1rem;
+    border: 0.6rem solid transparent;
+    border-right-color: var(--accent);
+    border-left: 0;
+  }
+  .bulle-dialogue::before {
+    content: '';
+    position: absolute;
+    left: -0.5rem;
+    bottom: 1.05rem;
+    border: 0.5rem solid transparent;
+    border-right-color: #fff;
+    border-left: 0;
+    z-index: 1;
+  }
+  @keyframes flotterMascotte {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-8px) rotate(3deg); }
+  }
+
+  /* Confettis */
+  .zone-confettis {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    overflow: visible;
+    pointer-events: none;
+    z-index: 1000;
+  }
+  .confetti {
+    position: absolute;
+    top: -10px;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    animation: tomberConfetti 2.2s ease-in forwards;
+  }
+  @keyframes tomberConfetti {
+    0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* Ceintures (par élève) */
+  .resume-progres {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    background: var(--fond-carte);
+    border-radius: 14px;
+    box-shadow: var(--ombre);
+    padding: 1rem 1.3rem;
+    margin-bottom: 1.6rem;
+  }
+  .resume-progres .texte-resume { font-size: 1.15rem; font-weight: 600; }
+  .bouton-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    padding: 0.6rem 1.2rem;
+    border-radius: 999px;
+    border: none;
+    background: linear-gradient(135deg, #ffd76a, var(--or));
+    color: #5a3d00;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 5px 14px rgba(232, 163, 13, 0.4);
+    transition: transform 0.15s ease;
+  }
+  .bouton-badges:hover { transform: translateY(-2px) rotate(-1deg); }
+  .bouton-badges:active { transform: scale(0.95); }
+  .grille-ceintures {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.2rem;
+  }
+  .carte-ceinture {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--fond-carte);
+    border: 2px solid var(--bordure);
+    border-radius: 16px;
+    padding: 1.1rem 1.3rem;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    font-size: 1.15rem;
+    color: var(--texte);
+    box-shadow: var(--ombre);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .carte-ceinture:hover, .carte-ceinture:focus-visible {
+    border-color: var(--accent);
+    outline: none;
+    transform: translateY(-3px) rotate(-0.5deg);
+    box-shadow: var(--ombre-hover);
+  }
+  .carte-ceinture:active { transform: scale(0.97); }
+  .carte-ceinture.valide { border-color: var(--vert); }
+  .pastille {
+    flex: none;
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.4rem;
+    border: 2px solid rgba(0,0,0,0.15);
+    box-shadow: inset 0 -6px 10px rgba(0,0,0,0.12), inset 0 4px 6px rgba(255,255,255,0.35), 0 3px 8px rgba(0,0,0,0.15);
+  }
+  .pastille.petite { width: 2.1rem; height: 2.1rem; font-size: 0.95rem; }
+  .carte-info { flex: 1; }
+  .carte-nom { font-weight: 700; font-size: 1.3rem; }
+  .carte-statut { color: var(--texte-att); font-size: 1rem; margin-top: 0.15rem; }
+  .carte-statut.valide { color: var(--vert); font-weight: 600; }
+
+  /* Badges */
+  .grille-badges {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1.2rem;
+  }
+  .carte-badge {
+    background: var(--fond-carte);
+    border-radius: 16px;
+    box-shadow: var(--ombre);
+    padding: 1.2rem 1rem;
+    text-align: center;
+    border: 2px solid var(--bordure);
+  }
+  .carte-badge.obtenu {
+    border-color: var(--or);
+    background: linear-gradient(160deg, #fffdf6, #fff3d6);
+  }
+  .carte-badge.verrouille { opacity: 0.45; filter: grayscale(0.6); }
+  .icone-badge { font-size: 2.8rem; line-height: 1; margin-bottom: 0.5rem; }
+  .nom-badge { font-weight: 700; font-size: 1.05rem; }
+  .description-badge { color: var(--texte-att); font-size: 0.85rem; margin-top: 0.3rem; }
+
+  .bandeau-nouveaux-badges {
+    background: linear-gradient(135deg, #fff3d6, #ffe4a3);
+    border: 2px solid var(--or);
+    border-radius: 16px;
+    padding: 1.2rem 1.5rem;
+    margin-top: 1rem;
+    text-align: center;
+    animation: apparitionBadge 0.5s ease;
+  }
+  .bandeau-nouveaux-badges .titre-bandeau { font-weight: 700; font-size: 1.2rem; margin-bottom: 0.6rem; color: #5a3d00; }
+  .ligne-nouveaux-badges { display: flex; justify-content: center; gap: 1.2rem; flex-wrap: wrap; }
+  .nouveau-badge { display: flex; flex-direction: column; align-items: center; animation: rebondBadge 0.6s ease; }
+  .nouveau-badge .icone-badge { font-size: 3.2rem; }
+  @keyframes apparitionBadge {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes rebondBadge {
+    0% { transform: scale(0.3); opacity: 0; }
+    60% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+
+  /* Écran de session */
+  .entete-session {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--texte-att);
+    margin-bottom: 0.6rem;
+  }
+  .piste-chrono {
+    height: 10px;
+    background: var(--bordure);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 2.5rem;
+  }
+  .barre-chrono { height: 100%; width: 100%; background: var(--accent); }
+  .zone-question {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 40vh;
+  }
+  .enonce {
+    font-size: clamp(2.6rem, 7vw, 5.2rem);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-bottom: 2rem;
+    transition: color 0.15s ease;
+  }
+  .enonce.correct { color: var(--vert); }
+  .enonce.incorrect { color: var(--rouge); }
+  .reponse-correcte { font-size: 1.6rem; color: var(--texte-att); min-height: 2.2rem; }
+  .champ-reponse {
+    font-size: 2.6rem;
+    text-align: center;
+    width: 8rem;
+    padding: 0.3rem 0.5rem;
+    border: 3px solid var(--bordure);
+    border-radius: 10px;
+    font-family: inherit;
+  }
+  .champ-reponse:focus { outline: none; border-color: var(--accent); }
+  .bouton-valider {
+    font-size: 1.6rem;
+    padding: 0.5rem 1.6rem;
+    margin-left: 1rem;
+    border-radius: 14px;
+    border: none;
+    background: var(--degrade-accent);
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    box-shadow: 0 6px 14px rgba(108, 92, 231, 0.35);
+    transition: transform 0.15s ease;
+  }
+  .bouton-valider:hover { transform: translateY(-2px) scale(1.03); }
+  .bouton-valider:active { transform: scale(0.95); }
+  .ligne-saisie { display: flex; align-items: center; justify-content: center; }
+  .saisie-fraction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .saisie-fraction input {
+    width: 5rem;
+    font-size: 2.4rem;
+    text-align: center;
+    padding: 0.3rem 0.2rem;
+    border: 3px solid var(--bordure);
+    border-radius: 10px;
+    font-family: inherit;
+  }
+  .saisie-fraction input:focus { outline: none; border-color: var(--accent); }
+  .barre-fraction { width: 5.5rem; height: 5px; background: var(--texte); border-radius: 3px; }
+  .choix-boutons { display: flex; gap: 1.2rem; }
+  .bouton-choix {
+    font-size: 3rem;
+    width: 6rem;
+    height: 4.2rem;
+    border-radius: 16px;
+    border: 3px solid var(--bordure);
+    background: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    box-shadow: var(--ombre);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .bouton-choix:hover, .bouton-choix:focus-visible { border-color: var(--accent); outline: none; transform: translateY(-2px) scale(1.05); box-shadow: var(--ombre-hover); }
+  .bouton-choix:active { transform: scale(0.93); }
+
+  /* Écran de résultats */
+  .resultats {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.2rem;
+  }
+  .score-final { font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 700; }
+  .message-final { font-size: 1.7rem; }
+  .message-final.reussi { color: var(--vert); }
+  .message-final.a-revoir { color: var(--texte-att); }
+  .actions-resultats { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; justify-content: center; }
+
+  /* Espace enseignant */
+  .bloc {
+    background: var(--fond-carte);
+    border: 2px solid var(--bordure);
+    border-radius: 16px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--ombre);
+  }
+  .bloc h2 { margin-top: 0; }
+  .ligne-formulaire { display: flex; gap: 0.7rem; align-items: center; flex-wrap: wrap; }
+  .champ-texte {
+    font-size: 1.2rem;
+    padding: 0.5rem 0.8rem;
+    border: 2px solid var(--bordure);
+    border-radius: 8px;
+    font-family: inherit;
+    flex: 1;
+    min-width: 12rem;
+  }
+  .liste-classe { list-style: none; padding: 0; margin: 1rem 0 0; display: flex; flex-wrap: wrap; gap: 0.6rem; }
+  .liste-classe li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #fff;
+    border: 2px solid var(--bordure);
+    border-radius: 999px;
+    padding: 0.35rem 0.5rem 0.35rem 1rem;
+    font-size: 1.05rem;
+  }
+  .liste-classe button {
+    border: none;
+    background: var(--rouge);
+    color: #fff;
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+  }
+  .zone-scroll { overflow-x: auto; }
+  table.suivi { border-collapse: collapse; width: 100%; font-size: 1rem; }
+  table.suivi th, table.suivi td {
+    border: 1px solid var(--bordure);
+    padding: 0.5rem 0.6rem;
+    text-align: center;
+    white-space: nowrap;
+  }
+  table.suivi th.nom-eleve, table.suivi td.nom-eleve { text-align: left; }
+  table.suivi td.valide { color: var(--vert); font-weight: 700; }
+  table.suivi td.non-tente { color: var(--texte-att); }
+  .actions-enseignant { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 0.8rem; }
+  .message-etat { font-size: 1rem; margin-top: 0.8rem; }
+  .message-etat.succes { color: var(--vert); }
+  .message-etat.erreur { color: var(--rouge); }
+  .bouton-fichier { position: relative; overflow: hidden; display: inline-block; }
+  .bouton-fichier input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fond: #12161d;
+      --fond-degrade: linear-gradient(160deg, #10141b 0%, #1c1710 100%);
+      --texte: #f2f3f4;
+      --texte-att: #a6adb4;
+      --bordure: #343b45;
+      --fond-carte: #1c2129;
+      --accent: #6ea3f2;
+      --accent-2: #b28aff;
+      --ombre: 0 6px 18px rgba(0, 0, 0, 0.45);
+      --ombre-hover: 0 10px 26px rgba(0, 0, 0, 0.55);
+    }
+    .champ-reponse, .bouton-choix, .bouton-secondaire, .champ-texte, .liste-classe li, .saisie-fraction input { background: #1c2129; color: var(--texte); }
+    .barre-fraction { background: var(--texte); }
+    .carte-badge.obtenu { background: linear-gradient(160deg, #2a2213, #3a2e0f); }
+    .bandeau-nouveaux-badges { background: linear-gradient(135deg, #3a2e0f, #4a3a10); color: #ffe9b0; }
+    .bandeau-nouveaux-badges .titre-bandeau { color: #ffe9b0; }
+    .bulle-dialogue { background: #1c2129; }
+    .bulle-dialogue::before { border-right-color: #1c2129; }
+  }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* ==========================================================================
+   Générateurs d'items — généré depuis generateurs.mjs (ne pas éditer ici)
+   ========================================================================== */
+function randInt(min, max, rng = Math.random) {
+  return Math.floor(rng() * (max - min + 1)) + min;
+}
+
+function pick(arr, rng = Math.random) {
+  return arr[randInt(0, arr.length - 1, rng)];
+}
+
+function gcd(a, b) {
+  a = Math.abs(a);
+  b = Math.abs(b);
+  while (b) {
+    [a, b] = [b, a % b];
+  }
+  return a || 1;
+}
+
+function melanger(arr, rng = Math.random) {
+  const copie = arr.slice();
+  for (let i = copie.length - 1; i > 0; i--) {
+    const j = randInt(0, i, rng);
+    [copie[i], copie[j]] = [copie[j], copie[i]];
+  }
+  return copie;
+}
+
+function fmtFR(n) {
+  return String(n).replace('.', ',');
+}
+
+function toNumericValue(raw) {
+  if (raw === undefined || raw === null) return NaN;
+  const s = String(raw).trim().toLowerCase().replace(/\s+/g, '').replace(',', '.');
+  if (s === '') return NaN;
+  const fracMatch = s.match(/^(-?\d+)\/(\d+)$/);
+  if (fracMatch) {
+    const n = Number(fracMatch[1]);
+    const d = Number(fracMatch[2]);
+    if (d === 0) return NaN;
+    return n / d;
+  }
+  if (!/^-?\d+(\.\d+)?$/.test(s)) return NaN;
+  return Number(s);
+}
+
+function checkAnswer(item, userInput) {
+  if (item.type === 'choix') {
+    const s = String(userInput).trim().toLowerCase();
+    return item.accept.some((a) => String(a).trim().toLowerCase() === s);
+  }
+  const v = toNumericValue(userInput);
+  if (Number.isNaN(v)) return false;
+  return item.accept.some((a) => {
+    const av = toNumericValue(a);
+    return !Number.isNaN(av) && Math.abs(av - v) < 1e-9;
+  });
+}
+
+function memeValeur(n1, d1, n2, d2) {
+  return n1 * d2 === n2 * d1;
+}
+
+const BLOC_PLEIN = '■';
+const BLOC_VIDE = '□';
+
+function dessinerPartage(n, d) {
+  return BLOC_PLEIN.repeat(n) + BLOC_VIDE.repeat(d - n);
+}
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+const DENOMINATEURS_SIMPLES = [2, 3, 4, 5, 6, 8, 10];
+
+function c1_lecture_partage(rng) {
+  const d = pick(DENOMINATEURS_SIMPLES, rng);
+  const n = randInt(1, d - 1, rng);
+  const reponse = `${n}/${d}`;
+  return {
+    enonce: `Quelle fraction est coloriée ? ${dessinerPartage(n, d)}`,
+    reponse,
+    accept: [reponse],
+    type: 'fraction',
+  };
+}
+
+function c1_production_partage(rng) {
+  const d = pick(DENOMINATEURS_SIMPLES, rng);
+  const n = randInt(1, d - 1, rng);
+  return {
+    enonce: `Sur une bande de ${d} cases égales, combien faut-il en colorier pour représenter ${n}/${d} ?`,
+    reponse: String(n),
+    accept: [String(n)],
+    type: 'nombre',
+  };
+}
+
+const CEINTURE_1 = [c1_lecture_partage, c1_production_partage];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+const NOMBRES_LETTRES = { 1: 'un', 2: 'deux', 3: 'trois', 4: 'quatre', 5: 'cinq', 6: 'six', 7: 'sept', 8: 'huit', 9: 'neuf' };
+const MOTS_DENOMINATEUR = {
+  2: { sing: 'demi', plur: 'demis' },
+  3: { sing: 'tiers', plur: 'tiers' },
+  4: { sing: 'quart', plur: 'quarts' },
+  5: { sing: 'cinquième', plur: 'cinquièmes' },
+  6: { sing: 'sixième', plur: 'sixièmes' },
+  7: { sing: 'septième', plur: 'septièmes' },
+  8: { sing: 'huitième', plur: 'huitièmes' },
+  9: { sing: 'neuvième', plur: 'neuvièmes' },
+  10: { sing: 'dixième', plur: 'dixièmes' },
+};
+
+function c2_numerateur_denominateur(rng) {
+  const d = randInt(2, 12, rng);
+  const n = randInt(1, d - 1, rng);
+  const demande = pick(['numerateur', 'denominateur'], rng);
+  const reponse = demande === 'numerateur' ? n : d;
+  return {
+    enonce: `Dans la fraction ${n}/${d}, quel est le ${demande === 'numerateur' ? 'numérateur' : 'dénominateur'} ?`,
+    reponse: String(reponse),
+    accept: [String(reponse)],
+    type: 'nombre',
+  };
+}
+
+function c2_mots_vers_fraction(rng) {
+  const d = randInt(2, 9, rng);
+  const n = randInt(1, d - 1, rng);
+  const mot = n === 1 ? MOTS_DENOMINATEUR[d].sing : MOTS_DENOMINATEUR[d].plur;
+  const phrase = `${NOMBRES_LETTRES[n]} ${mot}`;
+  const reponse = `${n}/${d}`;
+  return {
+    enonce: `Écris en chiffres : « ${phrase} »`,
+    reponse,
+    accept: [reponse],
+    type: 'fraction',
+  };
+}
+
+const CEINTURE_2 = [c2_numerateur_denominateur, c2_mots_vers_fraction];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function c3_partie_entiere(rng) {
+  const d = randInt(2, 9, rng);
+  let n = randInt(d + 1, 4 * d, rng);
+  while (n % d === 0) n = randInt(d + 1, 4 * d, rng);
+  const partieEntiere = Math.floor(n / d);
+  return {
+    enonce: `Quelle est la partie entière de la fraction ${n}/${d} ?`,
+    reponse: String(partieEntiere),
+    accept: [String(partieEntiere)],
+    type: 'nombre',
+  };
+}
+
+function c3_fraction_egale_entier(rng) {
+  const d = randInt(2, 9, rng);
+  const k = randInt(2, 6, rng);
+  const n = k * d;
+  return {
+    enonce: `${n}/${d} est égal à quel nombre entier ?`,
+    reponse: String(k),
+    accept: [String(k)],
+    type: 'nombre',
+  };
+}
+
+const CEINTURE_3 = [c3_partie_entiere, c3_fraction_egale_entier];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function symboleComparaison(a, b) {
+  return a < b ? '<' : a > b ? '>' : '=';
+}
+
+function c4_comparer_un_demi(rng) {
+  const d = randInt(2, 12, rng);
+  let n = randInt(1, 2 * d - 1, rng);
+  if (rng() < 0.15) n = d; // parfois exactement 1, testé aussi contre 1/2
+  const symbole = symboleComparaison(2 * n, d);
+  return {
+    enonce: `${n}/${d}  ?  1/2`,
+    reponse: symbole,
+    accept: [symbole],
+    type: 'choix',
+    choix: ['<', '=', '>'],
+  };
+}
+
+function c4_comparer_un(rng) {
+  const d = randInt(2, 12, rng);
+  let n = randInt(1, 2 * d - 1, rng);
+  if (rng() < 0.15) n = d; // parfois exactement égal
+  const symbole = symboleComparaison(n, d);
+  return {
+    enonce: `${n}/${d}  ?  1`,
+    reponse: symbole,
+    accept: [symbole],
+    type: 'choix',
+    choix: ['<', '=', '>'],
+  };
+}
+
+const CEINTURE_4 = [c4_comparer_un_demi, c4_comparer_un];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function c5_meme_denominateur(rng) {
+  const d = randInt(2, 12, rng);
+  const a = randInt(1, d - 1, rng);
+  const b = rng() < 0.2 ? a : randInt(1, d - 1, rng);
+  const symbole = symboleComparaison(a, b);
+  return {
+    enonce: `${a}/${d}  ?  ${b}/${d}`,
+    reponse: symbole,
+    accept: [symbole],
+    type: 'choix',
+    choix: ['<', '=', '>'],
+  };
+}
+
+function c5_meme_numerateur(rng) {
+  const n = randInt(2, 9, rng);
+  const d1 = randInt(n + 1, n + 10, rng);
+  const d2 = rng() < 0.2 ? d1 : randInt(n + 1, n + 10, rng);
+  // même numérateur : le plus grand dénominateur donne la plus petite part
+  const symbole = symboleComparaison(d2, d1);
+  return {
+    enonce: `${n}/${d1}  ?  ${n}/${d2}`,
+    reponse: symbole,
+    accept: [symbole],
+    type: 'choix',
+    choix: ['<', '=', '>'],
+  };
+}
+
+const CEINTURE_5 = [c5_meme_denominateur, c5_meme_numerateur];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function texteDecimal(numerateur, d) {
+  return d === 10 ? `0,${numerateur}` : `0,${String(numerateur).padStart(2, '0')}`;
+}
+
+function c6_fraction_vers_decimal(rng) {
+  const d = pick([10, 100], rng);
+  const n = randInt(1, d - 1, rng);
+  const reponse = texteDecimal(n, d);
+  return {
+    enonce: `Écris ${n}/${d} en écriture décimale.`,
+    reponse,
+    accept: [reponse],
+    type: 'nombre',
+  };
+}
+
+function c6_decimal_vers_fraction(rng) {
+  const d = pick([10, 100], rng);
+  const n = randInt(1, d - 1, rng);
+  const decimal = texteDecimal(n, d);
+  const reponse = `${n}/${d}`;
+  return {
+    enonce: `Écris ${decimal} sous forme de fraction décimale.`,
+    reponse,
+    accept: [reponse],
+    type: 'fraction',
+  };
+}
+
+const CEINTURE_6 = [c6_fraction_vers_decimal, c6_decimal_vers_fraction];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function c7_addition_meme_denominateur(rng) {
+  const d = randInt(2, 12, rng);
+  const a = randInt(1, d - 1, rng);
+  const b = randInt(1, d - 1, rng);
+  const somme = a + b;
+  const reponse = `${somme}/${d}`;
+  return {
+    enonce: `${a}/${d} + ${b}/${d} = ?`,
+    reponse,
+    accept: [reponse],
+    type: 'fraction',
+  };
+}
+
+const CEINTURE_7 = [c7_addition_meme_denominateur];
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+function c8_equivalence(rng) {
+  const d0 = randInt(2, 6, rng);
+  const n0 = randInt(1, d0 - 1, rng);
+  const k = randInt(2, 5, rng);
+  const correcte = `${n0 * k}/${d0 * k}`;
+
+  const distracteurs = [];
+  let tentatives = 0;
+  while (distracteurs.length < 3 && tentatives < 200) {
+    tentatives++;
+    const d1 = randInt(2, 12, rng);
+    const n1 = randInt(1, d1 - 1, rng);
+    if (memeValeur(n0, d0, n1, d1)) continue;
+    const texte = `${n1}/${d1}`;
+    if (texte === correcte) continue;
+    if (distracteurs.some((t) => {
+      const [tn, td] = t.split('/').map(Number);
+      return memeValeur(tn, td, n1, d1);
+    })) continue;
+    distracteurs.push(texte);
+  }
+  // Filet de sécurité si le tirage aléatoire n'a pas trouvé 3 distracteurs distincts.
+  while (distracteurs.length < 3) {
+    const d1 = d0 + distracteurs.length + 1;
+    distracteurs.push(`${n0}/${d1}`);
+  }
+
+  return {
+    enonce: `Quelle fraction est égale à ${n0}/${d0} ?`,
+    reponse: correcte,
+    accept: [correcte],
+    type: 'choix',
+    choix: melanger([correcte, ...distracteurs], rng),
+  };
+}
+
+function c8_multiplication_entier(rng) {
+  const d = randInt(2, 10, rng);
+  const n = randInt(1, d - 1, rng);
+  const k = randInt(2, 6, rng);
+  const reponse = `${n * k}/${d}`;
+  return {
+    enonce: `${k} × ${n}/${d} = ?`,
+    reponse,
+    accept: [reponse],
+    type: 'fraction',
+  };
+}
+
+const CEINTURE_8 = [c8_equivalence, c8_multiplication_entier];
+
+// ---------------------------------------------------------------------------
+
+const CEINTURES = [
+  { numero: 1, nom: 'Blanche', couleur: '#f5f5f0', texte: '#1a1a1a', generateurs: CEINTURE_1 },
+  { numero: 2, nom: 'Jaune', couleur: '#f4c430', texte: '#1a1a1a', generateurs: CEINTURE_2 },
+  { numero: 3, nom: 'Orange', couleur: '#e8720c', texte: '#ffffff', generateurs: CEINTURE_3 },
+  { numero: 4, nom: 'Verte', couleur: '#2e8b3d', texte: '#ffffff', generateurs: CEINTURE_4 },
+  { numero: 5, nom: 'Bleue', couleur: '#1f5fa8', texte: '#ffffff', generateurs: CEINTURE_5 },
+  { numero: 6, nom: 'Marron', couleur: '#6b4226', texte: '#ffffff', generateurs: CEINTURE_6 },
+  { numero: 7, nom: 'Noire', couleur: '#1a1a1a', texte: '#ffffff', generateurs: CEINTURE_7 },
+  { numero: 8, nom: 'Rouge', couleur: '#b5121b', texte: '#ffffff', generateurs: CEINTURE_8 },
+];
+
+function genererItem(numeroCeinture, rng = Math.random) {
+  const ceinture = CEINTURES[numeroCeinture - 1];
+  if (!ceinture) throw new Error(`Ceinture inconnue : ${numeroCeinture}`);
+  const generateur = pick(ceinture.generateurs, rng);
+  return generateur(rng);
+}
+
+/* ==========================================================================
+   Gestion des données multi-élèves — généré depuis stockage.mjs
+   ========================================================================== */
+function creerStockageVide() {
+  return { code: null, roster: [], eleves: {} };
+}
+
+function definirCode(store, code) {
+  return { ...store, code: String(code).trim() };
+}
+
+function verifierCode(store, code) {
+  return store.code !== null && store.code !== '' && String(code).trim() === store.code;
+}
+
+function ajouterEleve(store, nom) {
+  const propre = String(nom).trim();
+  if (!propre || store.roster.includes(propre)) return store;
+  return { ...store, roster: [...store.roster, propre] };
+}
+
+function retirerEleve(store, nom) {
+  const roster = store.roster.filter((n) => n !== nom);
+  const eleves = { ...store.eleves };
+  delete eleves[nom];
+  return { ...store, roster, eleves };
+}
+
+function reinitialiserScoresEleve(store, nom) {
+  const eleves = { ...store.eleves };
+  delete eleves[nom];
+  return { ...store, eleves };
+}
+
+function enregistrerScore(store, nom, numeroCeinture, score, seuilReussite) {
+  const roster = store.roster.includes(nom) ? store.roster : [...store.roster, nom];
+  const eleves = { ...store.eleves };
+  const donneesEleve = { ...(eleves[nom] || {}) };
+  const precedent = donneesEleve[numeroCeinture] || { meilleurScore: 0, valide: false, tentatives: 0, date: null };
+  const valide = precedent.valide || score >= seuilReussite;
+  donneesEleve[numeroCeinture] = {
+    meilleurScore: Math.max(precedent.meilleurScore, score),
+    valide,
+    tentatives: precedent.tentatives + 1,
+    date: !precedent.valide && valide ? new Date().toISOString() : precedent.date,
+  };
+  eleves[nom] = donneesEleve;
+  return { ...store, roster, eleves };
+}
+
+function fusionnerEntreeCeinture(a, b) {
+  if (!a) return b;
+  if (!b) return a;
+  return {
+    meilleurScore: Math.max(a.meilleurScore, b.meilleurScore),
+    valide: a.valide || b.valide,
+    tentatives: (a.tentatives || 0) + (b.tentatives || 0),
+    date: a.date && b.date ? (a.date < b.date ? a.date : b.date) : a.date || b.date || null,
+  };
+}
+
+function fusionnerStockages(local, importe) {
+  const roster = [...local.roster];
+  importe.roster.forEach((n) => {
+    if (!roster.includes(n)) roster.push(n);
+  });
+
+  const eleves = {};
+  const noms = new Set([...Object.keys(local.eleves), ...Object.keys(importe.eleves)]);
+  noms.forEach((nom) => {
+    const a = local.eleves[nom] || {};
+    const b = importe.eleves[nom] || {};
+    const numeros = new Set([...Object.keys(a), ...Object.keys(b)]);
+    const fusion = {};
+    numeros.forEach((num) => {
+      fusion[num] = fusionnerEntreeCeinture(a[num], b[num]);
+    });
+    eleves[nom] = fusion;
+  });
+
+  return { code: local.code, roster, eleves };
+}
+
+function champCSV(valeur) {
+  const s = String(valeur);
+  if (/[;"\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+  return s;
+}
+
+function genererCSV(store) {
+  const entetes = ['Élève', ...CEINTURES.map((c) => 'Ceinture ' + c.nom)];
+  const lignes = [entetes];
+  store.roster.forEach((nom) => {
+    const ligne = [nom];
+    CEINTURES.forEach((c) => {
+      const info = store.eleves[nom] && store.eleves[nom][c.numero];
+      ligne.push(info ? (info.valide ? 'Validée (' + info.meilleurScore + '/10)' : info.meilleurScore + '/10') : '');
+    });
+    lignes.push(ligne);
+  });
+  return lignes.map((ligne) => ligne.map(champCSV).join(';')).join('\r\n');
+}
+
+/* ==========================================================================
+   Système de badges — généré depuis badges.mjs
+   ========================================================================== */
+const BADGES = [
+  { id: 'ceinture-1', type: 'ceinture', numero: 1, nom: 'Blanche', description: 'Ceinture Blanche obtenue', icone: '🥋' },
+  { id: 'ceinture-2', type: 'ceinture', numero: 2, nom: 'Jaune', description: 'Ceinture Jaune obtenue', icone: '🥋' },
+  { id: 'ceinture-3', type: 'ceinture', numero: 3, nom: 'Orange', description: 'Ceinture Orange obtenue', icone: '🥋' },
+  { id: 'ceinture-4', type: 'ceinture', numero: 4, nom: 'Verte', description: 'Ceinture Verte obtenue', icone: '🥋' },
+  { id: 'ceinture-5', type: 'ceinture', numero: 5, nom: 'Bleue', description: 'Ceinture Bleue obtenue', icone: '🥋' },
+  { id: 'ceinture-6', type: 'ceinture', numero: 6, nom: 'Marron', description: 'Ceinture Marron obtenue', icone: '🥋' },
+  { id: 'ceinture-7', type: 'ceinture', numero: 7, nom: 'Noire', description: 'Ceinture Noire obtenue', icone: '🥋' },
+  { id: 'ceinture-8', type: 'ceinture', numero: 8, nom: 'Rouge', description: 'Ceinture Rouge obtenue', icone: '🥋' },
+  { id: 'premier-coup', type: 'bonus', nom: 'Premier coup', description: 'Une ceinture validée dès la première tentative', icone: '🎯' },
+  { id: 'sans-faute', type: 'bonus', nom: 'Sans-faute', description: 'Un sans-faute sur une ceinture', icone: '⭐' },
+  { id: 'perseverant', type: 'bonus', nom: 'Persévérant', description: '30 tentatives cumulées, on ne lâche rien', icone: '💪' },
+  { id: 'toutes-ceintures', type: 'bonus', nom: 'Maître du calcul mental', description: 'Les 8 ceintures obtenues', icone: '🏆' },
+];
+
+const SEUIL_PERSEVERANCE = 30;
+
+function calculerBadgesObtenus(donneesEleve, ceintures, nbQuestions) {
+  donneesEleve = donneesEleve || {};
+  const obtenus = new Set();
+  let toutesValidees = ceintures.length > 0;
+  let totalTentatives = 0;
+
+  ceintures.forEach((c) => {
+    const info = donneesEleve[c.numero];
+    if (!info) { toutesValidees = false; return; }
+    totalTentatives += info.tentatives || 0;
+    if (info.valide) {
+      obtenus.add('ceinture-' + c.numero);
+      if (info.meilleurScore === nbQuestions) obtenus.add('sans-faute');
+      if (info.tentatives === 1) obtenus.add('premier-coup');
+    } else {
+      toutesValidees = false;
+    }
+  });
+
+  if (toutesValidees) obtenus.add('toutes-ceintures');
+  if (totalTentatives >= SEUIL_PERSEVERANCE) obtenus.add('perseverant');
+
+  return BADGES.filter((b) => obtenus.has(b.id));
+}
+
+/* ==========================================================================
+   Application
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  var CLE_STOCKAGE = 'ceintures-fractions-v1';
+  var NB_QUESTIONS = 10;
+  var SEUIL_REUSSITE = 8;
+  var TEMPS_LIMITE = { 1: 20, 2: 18, 3: 18, 4: 16, 5: 16, 6: 20, 7: 18, 8: 22 };
+
+  var app = document.getElementById('app');
+
+  function chargerStore() {
+    try {
+      var brut = JSON.parse(localStorage.getItem(CLE_STOCKAGE));
+      if (brut && brut.roster && brut.eleves) return brut;
+    } catch (e) { /* ignore, on repart d'un store vide */ }
+    return creerStockageVide();
+  }
+
+  function sauverStore() {
+    localStorage.setItem(CLE_STOCKAGE, JSON.stringify(store));
+  }
+
+  var store = chargerStore();
+  var eleveCourant = null;
+  var enseignantAuthentifie = false;
+  var session = null;
+
+  function el(tag, props, enfants) {
+    var node = document.createElement(tag);
+    if (props) {
+      Object.keys(props).forEach(function (k) {
+        if (k === 'class') node.className = props[k];
+        else if (k === 'text') node.textContent = props[k];
+        else if (k.indexOf('on') === 0 && typeof props[k] === 'function') node.addEventListener(k.slice(2), props[k]);
+        else node.setAttribute(k, props[k]);
+      });
+    }
+    (enfants || []).forEach(function (c) { if (c) node.appendChild(c); });
+    return node;
+  }
+
+  function vider(node) { while (node.firstChild) node.removeChild(node.firstChild); }
+
+  function telechargerFichier(nomFichier, contenu, type) {
+    var blob = new Blob([contenu], { type: type });
+    var url = URL.createObjectURL(blob);
+    var lien = document.createElement('a');
+    lien.href = url;
+    lien.download = nomFichier;
+    document.body.appendChild(lien);
+    lien.click();
+    document.body.removeChild(lien);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+
+  function dateFichier() {
+    var d = new Date();
+    function p(n) { return String(n).padStart(2, '0'); }
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  }
+
+  var MASCOTTE = '🦊';
+  var PHRASES_ACCUEIL = [
+    'Prêt à devenir un champion des fractions ?',
+    'Salut ! On s’entraîne un peu ?',
+    'Choisis ton prénom pour commencer l’aventure !',
+  ];
+  var PHRASES_REUSSITE = [
+    'Bravo, tu assures grave !',
+    'Trop fort, ceinture méritée !',
+    'Champion des fractions !',
+    'Tu progresses à vitesse grand V !',
+    'Génial, continue comme ça !',
+  ];
+  var PHRASES_ENCOURAGEMENT = [
+    'Pas grave, on retente !',
+    'Tu y es presque, courage !',
+    'Chaque essai te rend plus fort !',
+    'On ne lâche rien, tu vas y arriver !',
+  ];
+
+  function tirerPhrase(liste) { return liste[Math.floor(Math.random() * liste.length)]; }
+
+  function creerMascotte(message) {
+    return el('div', { class: 'zone-mascotte' }, [
+      el('div', { class: 'mascotte', text: MASCOTTE }),
+      el('div', { class: 'bulle-dialogue', text: message }),
+    ]);
+  }
+
+  var COULEURS_CONFETTIS = ['#ff5da2', '#6c5ce7', '#00c2a8', '#ffb703', '#06aed5', '#ff8c42'];
+
+  function lancerConfettis() {
+    var zone = el('div', { class: 'zone-confettis' });
+    for (var i = 0; i < 40; i++) {
+      var piece = el('div', { class: 'confetti' });
+      piece.style.left = Math.round(Math.random() * 100) + '%';
+      piece.style.background = COULEURS_CONFETTIS[i % COULEURS_CONFETTIS.length];
+      piece.style.animationDelay = (Math.random() * 0.5) + 's';
+      zone.appendChild(piece);
+    }
+    document.body.appendChild(zone);
+    setTimeout(function () { if (zone.parentNode) zone.parentNode.removeChild(zone); }, 3000);
+  }
+
+  // --------------------------------------------------------------------
+  // Écran d'identification (choix de l'élève)
+  // --------------------------------------------------------------------
+
+  function afficherIdentification() {
+    eleveCourant = null;
+    session = null;
+    vider(app);
+    app.appendChild(el('h1', { text: 'Ceintures de fractions' }));
+    app.appendChild(el('p', { class: 'sous-titre', text: 'CM1-CM2 — Qui es-tu ?' }));
+    app.appendChild(creerMascotte(tirerPhrase(PHRASES_ACCUEIL)));
+
+    if (store.roster.length === 0) {
+      app.appendChild(el('p', { class: 'message-vide', text: 'Aucun élève n’est encore configuré. Rendez-vous dans l’Espace enseignant pour ajouter la classe.' }));
+    } else {
+      var grille = el('div', { class: 'grille-eleves' });
+      store.roster.forEach(function (nom) {
+        grille.appendChild(el('button', {
+          class: 'bouton-eleve',
+          type: 'button',
+          text: nom,
+          onclick: function () { eleveCourant = nom; afficherCeintures(); },
+        }));
+      });
+      app.appendChild(grille);
+    }
+
+    app.appendChild(el('div', { class: 'barre-basse' }, [
+      el('button', { class: 'bouton-lien', type: 'button', text: 'Espace enseignant', onclick: afficherEnseignantEntree }),
+    ]));
+  }
+
+  // --------------------------------------------------------------------
+  // Écran des ceintures (personnalisé par élève)
+  // --------------------------------------------------------------------
+
+  function afficherCeintures() {
+    session = null;
+    vider(app);
+    app.appendChild(el('div', { class: 'entete-ecran' }, [
+      el('h1', { text: eleveCourant }),
+      el('button', { class: 'bouton-lien', type: 'button', text: 'Changer d’élève', onclick: afficherIdentification }),
+    ]));
+    app.appendChild(el('p', { class: 'sous-titre', text: '8 ceintures pour progresser sur les fractions' }));
+
+    var donneesEleve = store.eleves[eleveCourant] || {};
+    var nbValidees = CEINTURES.filter(function (c) { return donneesEleve[c.numero] && donneesEleve[c.numero].valide; }).length;
+    var badgesObtenus = calculerBadgesObtenus(donneesEleve, CEINTURES, NB_QUESTIONS);
+
+    app.appendChild(el('div', { class: 'resume-progres' }, [
+      el('div', { class: 'texte-resume', text: nbValidees + ' / ' + CEINTURES.length + ' ceintures obtenues' }),
+      el('button', {
+        class: 'bouton-badges',
+        type: 'button',
+        onclick: afficherBadges,
+      }, [document.createTextNode('🏅 Mes badges (' + badgesObtenus.length + '/' + BADGES.length + ')')]),
+    ]));
+
+    var grille = el('div', { class: 'grille-ceintures' });
+    CEINTURES.forEach(function (ceinture) {
+      var info = donneesEleve[ceinture.numero];
+      var statut = el('div', {
+        class: 'carte-statut' + (info && info.valide ? ' valide' : ''),
+        text: info ? (info.valide ? '✓ Validée — meilleur score ' + info.meilleurScore + '/' + NB_QUESTIONS : 'Meilleur score : ' + info.meilleurScore + '/' + NB_QUESTIONS) : 'Pas encore tentée',
+      });
+      var pastille = el('div', { class: 'pastille', text: String(ceinture.numero), style: 'background:' + ceinture.couleur + ';color:' + ceinture.texte + ';' });
+      var carte = el('button', {
+        class: 'carte-ceinture' + (info && info.valide ? ' valide' : ''),
+        type: 'button',
+        onclick: function () { demarrerSession(ceinture.numero); },
+      }, [
+        pastille,
+        el('div', { class: 'carte-info' }, [
+          el('div', { class: 'carte-nom', text: 'Ceinture ' + ceinture.nom }),
+          statut,
+        ]),
+      ]);
+      grille.appendChild(carte);
+    });
+    app.appendChild(grille);
+  }
+
+  // --------------------------------------------------------------------
+  // Écran des badges
+  // --------------------------------------------------------------------
+
+  function afficherBadges() {
+    vider(app);
+    app.appendChild(el('div', { class: 'entete-ecran' }, [
+      el('h1', { text: 'Mes badges' }),
+      el('button', { class: 'bouton-lien', type: 'button', text: 'Retour', onclick: afficherCeintures }),
+    ]));
+
+    var donneesEleve = store.eleves[eleveCourant] || {};
+    var obtenus = calculerBadgesObtenus(donneesEleve, CEINTURES, NB_QUESTIONS);
+    var idsObtenus = obtenus.map(function (b) { return b.id; });
+    app.appendChild(el('p', { class: 'sous-titre', text: eleveCourant + ' — ' + obtenus.length + ' badge' + (obtenus.length > 1 ? 's' : '') + ' sur ' + BADGES.length }));
+
+    var grille = el('div', { class: 'grille-badges' });
+    BADGES.forEach(function (b) {
+      var obtenu = idsObtenus.indexOf(b.id) !== -1;
+      grille.appendChild(el('div', { class: 'carte-badge ' + (obtenu ? 'obtenu' : 'verrouille') }, [
+        el('div', { class: 'icone-badge', text: obtenu ? b.icone : '🔒' }),
+        el('div', { class: 'nom-badge', text: b.nom }),
+        el('div', { class: 'description-badge', text: b.description }),
+      ]));
+    });
+    app.appendChild(grille);
+  }
+
+  // --------------------------------------------------------------------
+  // Écran de session
+  // --------------------------------------------------------------------
+
+  function demarrerSession(numero) {
+    var items = [];
+    for (var i = 0; i < NB_QUESTIONS; i++) items.push(genererItem(numero));
+    session = { numero: numero, items: items, index: 0, scores: [], timeoutId: null };
+    afficherQuestion();
+  }
+
+  function ceintureCourante() { return CEINTURES[session.numero - 1]; }
+
+  function afficherQuestion() {
+    vider(app);
+    var ceinture = ceintureCourante();
+    var item = session.items[session.index];
+
+    var entete = el('div', { class: 'entete-session' }, [
+      el('span', { text: eleveCourant + ' — Ceinture ' + ceinture.nom }),
+      el('span', { text: 'Question ' + (session.index + 1) + ' / ' + NB_QUESTIONS }),
+    ]);
+    app.appendChild(entete);
+
+    var barreChrono = el('div', { class: 'barre-chrono' });
+    app.appendChild(el('div', { class: 'piste-chrono' }, [barreChrono]));
+
+    var enonce = el('div', { class: 'enonce', text: item.enonce });
+    var reponseAffichee = el('div', { class: 'reponse-correcte' });
+    var zone = el('div', { class: 'zone-question' }, [enonce, reponseAffichee]);
+
+    var saisie;
+    if (item.type === 'choix') {
+      saisie = el('div', { class: 'choix-boutons' });
+      item.choix.forEach(function (symbole) {
+        saisie.appendChild(el('button', {
+          class: 'bouton-choix',
+          type: 'button',
+          text: symbole,
+          onclick: function () { valider(symbole, item, enonce, reponseAffichee); },
+        }));
+      });
+    } else if (item.type === 'fraction') {
+      var champNum = el('input', { class: 'champ-numerateur', type: 'text', inputmode: 'numeric', autocomplete: 'off' });
+      var champDen = el('input', { class: 'champ-denominateur', type: 'text', inputmode: 'numeric', autocomplete: 'off' });
+      var valeurFraction = function () { return champNum.value + '/' + champDen.value; };
+      var boutonValiderFraction = el('button', { class: 'bouton-valider', type: 'button', text: 'Valider', onclick: function () { valider(valeurFraction(), item, enonce, reponseAffichee); } });
+      [champNum, champDen].forEach(function (champ) {
+        champ.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') valider(valeurFraction(), item, enonce, reponseAffichee);
+        });
+      });
+      saisie = el('div', { class: 'ligne-saisie' }, [
+        el('div', { class: 'saisie-fraction' }, [champNum, el('div', { class: 'barre-fraction' }), champDen]),
+        boutonValiderFraction,
+      ]);
+    } else {
+      var champ = el('input', { class: 'champ-reponse', type: 'text', inputmode: 'decimal', autocomplete: 'off' });
+      var boutonValider = el('button', { class: 'bouton-valider', type: 'button', text: 'Valider', onclick: function () { valider(champ.value, item, enonce, reponseAffichee); } });
+      champ.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') valider(champ.value, item, enonce, reponseAffichee);
+      });
+      saisie = el('div', { class: 'ligne-saisie' }, [champ, boutonValider]);
+    }
+    zone.appendChild(saisie);
+    app.appendChild(zone);
+
+    if (item.type === 'fraction') {
+      setTimeout(function () { var c = app.querySelector('.champ-numerateur'); if (c) c.focus(); }, 0);
+    } else if (item.type !== 'choix') {
+      setTimeout(function () { var c = app.querySelector('.champ-reponse'); if (c) c.focus(); }, 0);
+    }
+
+    var duree = TEMPS_LIMITE[ceinture.numero] || 15;
+    barreChrono.style.transition = 'none';
+    barreChrono.style.width = '100%';
+    void barreChrono.offsetWidth;
+    barreChrono.style.transition = 'width ' + duree + 's linear';
+    barreChrono.style.width = '0%';
+
+    session.dejaValide = false;
+    session.timeoutId = setTimeout(function () {
+      valider('', item, enonce, reponseAffichee, true);
+    }, duree * 1000);
+  }
+
+  function valider(valeur, item, enonce, reponseAffichee, tempsEcoule) {
+    if (session.dejaValide) return;
+    session.dejaValide = true;
+    clearTimeout(session.timeoutId);
+
+    var correct = !tempsEcoule && checkAnswer(item, valeur);
+    session.scores.push(correct ? 1 : 0);
+
+    var boutons = app.querySelectorAll('.bouton-choix, .bouton-valider, .champ-reponse, .champ-numerateur, .champ-denominateur');
+    boutons.forEach(function (b) { b.disabled = true; });
+
+    enonce.classList.add(correct ? 'correct' : 'incorrect');
+    if (!correct) {
+      reponseAffichee.textContent = tempsEcoule ? 'Temps écoulé — réponse : ' + item.reponse : 'Réponse : ' + item.reponse;
+    } else {
+      reponseAffichee.textContent = '✓';
+    }
+
+    setTimeout(function () {
+      session.index++;
+      if (session.index < NB_QUESTIONS) {
+        afficherQuestion();
+      } else {
+        afficherResultats();
+      }
+    }, correct ? 500 : 1400);
+  }
+
+  // --------------------------------------------------------------------
+  // Écran de résultats
+  // --------------------------------------------------------------------
+
+  function afficherResultats() {
+    var ceinture = ceintureCourante();
+    var score = session.scores.reduce(function (a, b) { return a + b; }, 0);
+    var reussi = score >= SEUIL_REUSSITE;
+
+    var donneesAvant = store.eleves[eleveCourant] || {};
+    var badgesAvant = calculerBadgesObtenus(donneesAvant, CEINTURES, NB_QUESTIONS).map(function (b) { return b.id; });
+
+    store = enregistrerScore(store, eleveCourant, ceinture.numero, score, SEUIL_REUSSITE);
+    sauverStore();
+
+    var badgesApres = calculerBadgesObtenus(store.eleves[eleveCourant], CEINTURES, NB_QUESTIONS);
+    var nouveauxBadges = badgesApres.filter(function (b) { return badgesAvant.indexOf(b.id) === -1; });
+
+    vider(app);
+    var suivante = CEINTURES[ceinture.numero];
+    var phraseMascotte = reussi ? tirerPhrase(PHRASES_REUSSITE) : tirerPhrase(PHRASES_ENCOURAGEMENT);
+    var blocs = [
+      creerMascotte(phraseMascotte),
+      el('div', { class: 'sous-titre', text: eleveCourant + ' — Ceinture ' + ceinture.nom }),
+      el('div', { class: 'score-final', text: score + ' / ' + NB_QUESTIONS }),
+      el('div', {
+        class: 'message-final ' + (reussi ? 'reussi' : 'a-revoir'),
+        text: reussi ? 'Ceinture obtenue !' : 'Pas encore — il faut ' + SEUIL_REUSSITE + '/' + NB_QUESTIONS + ' pour valider.',
+      }),
+    ];
+    if (nouveauxBadges.length > 0) {
+      blocs.push(el('div', { class: 'bandeau-nouveaux-badges' }, [
+        el('div', { class: 'titre-bandeau', text: '🎉 Nouveau' + (nouveauxBadges.length > 1 ? 'x badges' : ' badge') + ' débloqué' + (nouveauxBadges.length > 1 ? 's' : '') + ' !' }),
+        el('div', { class: 'ligne-nouveaux-badges' }, nouveauxBadges.map(function (b) {
+          return el('div', { class: 'nouveau-badge' }, [
+            el('div', { class: 'icone-badge', text: b.icone }),
+            el('div', { class: 'nom-badge', text: b.nom }),
+          ]);
+        })),
+      ]));
+    }
+    blocs.push(el('div', { class: 'actions-resultats' }, [
+      el('button', { class: 'bouton-secondaire', type: 'button', text: 'Mes ceintures', onclick: afficherCeintures }),
+      el('button', { class: 'bouton-principal', type: 'button', text: 'Recommencer', onclick: function () { demarrerSession(ceinture.numero); } }),
+      suivante ? el('button', { class: 'bouton-principal', type: 'button', text: 'Ceinture suivante', onclick: function () { demarrerSession(suivante.numero); } }) : null,
+    ]));
+    var resultatsDiv = el('div', { class: 'resultats' }, blocs);
+    app.appendChild(resultatsDiv);
+    if (nouveauxBadges.length > 0) lancerConfettis();
+  }
+
+  // --------------------------------------------------------------------
+  // Espace enseignant
+  // --------------------------------------------------------------------
+
+  function afficherEnseignantEntree() {
+    vider(app);
+    app.appendChild(el('h1', { text: 'Espace enseignant' }));
+
+    if (store.code === null) {
+      app.appendChild(el('p', { class: 'sous-titre', text: 'Première utilisation : choisissez un code à 4 chiffres pour protéger cet espace.' }));
+      var champ1 = el('input', { class: 'champ-texte', type: 'password', inputmode: 'numeric', maxlength: '4', placeholder: 'Code à 4 chiffres' });
+      var erreur = el('p', { class: 'message-etat erreur' });
+      var form = el('div', { class: 'bloc' }, [
+        el('div', { class: 'ligne-formulaire' }, [
+          champ1,
+          el('button', { class: 'bouton-principal', type: 'button', text: 'Créer le code', onclick: function () {
+            var v = champ1.value.trim();
+            if (!/^\d{4}$/.test(v)) { erreur.textContent = 'Le code doit contenir exactement 4 chiffres.'; return; }
+            store = definirCode(store, v);
+            sauverStore();
+            enseignantAuthentifie = true;
+            afficherEnseignant();
+          } }),
+        ]),
+        erreur,
+      ]);
+      app.appendChild(form);
+    } else {
+      app.appendChild(el('p', { class: 'sous-titre', text: 'Saisissez le code enseignant.' }));
+      var champ = el('input', { class: 'champ-texte', type: 'password', inputmode: 'numeric', maxlength: '4', placeholder: 'Code' });
+      var msgErreur = el('p', { class: 'message-etat erreur' });
+      var tentativeValidation = function () {
+        if (verifierCode(store, champ.value)) {
+          enseignantAuthentifie = true;
+          afficherEnseignant();
+        } else {
+          msgErreur.textContent = 'Code incorrect.';
+        }
+      };
+      champ.addEventListener('keydown', function (e) { if (e.key === 'Enter') tentativeValidation(); });
+      app.appendChild(el('div', { class: 'bloc' }, [
+        el('div', { class: 'ligne-formulaire' }, [
+          champ,
+          el('button', { class: 'bouton-principal', type: 'button', text: 'Entrer', onclick: tentativeValidation }),
+        ]),
+        msgErreur,
+      ]));
+      setTimeout(function () { champ.focus(); }, 0);
+    }
+
+    app.appendChild(el('div', { class: 'barre-basse' }, [
+      el('button', { class: 'bouton-lien', type: 'button', text: 'Retour', onclick: afficherIdentification }),
+    ]));
+  }
+
+  function afficherEnseignant() {
+    if (!enseignantAuthentifie) { afficherEnseignantEntree(); return; }
+    vider(app);
+    app.appendChild(el('div', { class: 'entete-ecran' }, [
+      el('h1', { text: 'Espace enseignant' }),
+      el('button', { class: 'bouton-lien', type: 'button', text: 'Quitter', onclick: afficherIdentification }),
+    ]));
+
+    // Gestion de la classe -------------------------------------------------
+    var champNom = el('input', { class: 'champ-texte', type: 'text', placeholder: 'Prénom de l’élève' });
+    var listeClasse = el('ul', { class: 'liste-classe' });
+    function rafraichirListe() {
+      vider(listeClasse);
+      store.roster.forEach(function (nom) {
+        listeClasse.appendChild(el('li', {}, [
+          el('span', { text: nom }),
+          el('button', { type: 'button', text: '×', onclick: function () {
+            if (window.confirm('Retirer ' + nom + ' de la classe ? Ses scores seront supprimés.')) {
+              store = retirerEleve(store, nom);
+              sauverStore();
+              rafraichirListe();
+              rafraichirTableau();
+            }
+          } }),
+        ]));
+      });
+    }
+    function ajouter() {
+      if (!champNom.value.trim()) return;
+      store = ajouterEleve(store, champNom.value);
+      sauverStore();
+      champNom.value = '';
+      rafraichirListe();
+      rafraichirTableau();
+    }
+    champNom.addEventListener('keydown', function (e) { if (e.key === 'Enter') ajouter(); });
+    app.appendChild(el('div', { class: 'bloc' }, [
+      el('h2', { text: 'Classe' }),
+      el('div', { class: 'ligne-formulaire' }, [
+        champNom,
+        el('button', { class: 'bouton-principal', type: 'button', text: 'Ajouter', onclick: ajouter }),
+      ]),
+      listeClasse,
+    ]));
+    rafraichirListe();
+
+    // Tableau de suivi -------------------------------------------------
+    var zoneTableau = el('div', { class: 'zone-scroll' });
+    function rafraichirTableau() {
+      vider(zoneTableau);
+      var noms = store.roster.slice().sort(function (a, b) { return a.localeCompare(b, 'fr'); });
+      if (noms.length === 0) {
+        zoneTableau.appendChild(el('p', { class: 'message-vide', text: 'Aucun élève dans la classe.' }));
+        return;
+      }
+      var thead = el('tr', {}, [el('th', { class: 'nom-eleve', text: 'Élève' })].concat(
+        CEINTURES.map(function (c) { return el('th', { text: c.numero + ' ' + c.nom }); })
+      ).concat([el('th', { text: '🏅 Badges' })]));
+      var lignes = [thead];
+      noms.forEach(function (nom) {
+        var donnees = store.eleves[nom] || {};
+        var cellules = [el('td', { class: 'nom-eleve', text: nom })];
+        CEINTURES.forEach(function (c) {
+          var info = donnees[c.numero];
+          if (!info) {
+            cellules.push(el('td', { class: 'non-tente', text: '–' }));
+          } else {
+            cellules.push(el('td', {
+              class: info.valide ? 'valide' : '',
+              text: (info.valide ? '✓ ' : '') + info.meilleurScore + '/' + NB_QUESTIONS,
+            }));
+          }
+        });
+        var nbBadges = calculerBadgesObtenus(donnees, CEINTURES, NB_QUESTIONS).length;
+        cellules.push(el('td', { text: nbBadges + '/' + BADGES.length }));
+        lignes.push(el('tr', {}, cellules));
+      });
+      zoneTableau.appendChild(el('table', { class: 'suivi' }, lignes));
+    }
+    rafraichirTableau();
+
+    app.appendChild(el('div', { class: 'bloc' }, [
+      el('h2', { text: 'Tableau de suivi' }),
+      zoneTableau,
+    ]));
+
+    // Export / import / réinitialisation -------------------------------
+    var messageEtat = el('p', { class: 'message-etat' });
+    var champImport = el('input', { type: 'file', accept: 'application/json' });
+    champImport.addEventListener('change', function () {
+      var fichier = champImport.files[0];
+      if (!fichier) return;
+      var lecteur = new FileReader();
+      lecteur.onload = function () {
+        try {
+          var importe = JSON.parse(lecteur.result);
+          if (!importe || !Array.isArray(importe.roster) || typeof importe.eleves !== 'object') {
+            throw new Error('format invalide');
+          }
+          store = fusionnerStockages(store, importe);
+          sauverStore();
+          rafraichirListe();
+          rafraichirTableau();
+          messageEtat.className = 'message-etat succes';
+          messageEtat.textContent = 'Import réussi : les données ont été fusionnées.';
+        } catch (e) {
+          messageEtat.className = 'message-etat erreur';
+          messageEtat.textContent = 'Fichier invalide : impossible d’importer ces données.';
+        }
+      };
+      lecteur.readAsText(fichier);
+      champImport.value = '';
+    });
+
+    app.appendChild(el('div', { class: 'bloc' }, [
+      el('h2', { text: 'Données' }),
+      el('p', { class: 'sous-titre', text: 'Pour rassembler les résultats de plusieurs tablettes, exportez depuis chacune puis importez les fichiers sur un même appareil.' }),
+      el('div', { class: 'actions-enseignant' }, [
+        el('button', { class: 'bouton-secondaire', type: 'button', text: 'Exporter les données (JSON)', onclick: function () {
+          telechargerFichier('ceintures-fractions-' + dateFichier() + '.json', JSON.stringify(store, null, 2), 'application/json');
+        } }),
+        el('button', { class: 'bouton-secondaire', type: 'button', text: 'Exporter le tableau (CSV)', onclick: function () {
+          telechargerFichier('tableau-suivi-' + dateFichier() + '.csv', '﻿' + genererCSV(store), 'text/csv;charset=utf-8');
+        } }),
+        el('label', { class: 'bouton-secondaire bouton-fichier' }, [document.createTextNode('Importer un fichier JSON'), champImport]),
+      ]),
+      messageEtat,
+    ]));
+
+    app.appendChild(el('div', { class: 'bloc' }, [
+      el('h2', { text: 'Zone sensible' }),
+      el('div', { class: 'actions-enseignant' }, [
+        el('button', { class: 'bouton-danger', type: 'button', text: 'Changer le code enseignant', onclick: function () {
+          var nouveau = window.prompt('Nouveau code à 4 chiffres :');
+          if (nouveau === null) return;
+          if (!/^\d{4}$/.test(nouveau.trim())) { window.alert('Le code doit contenir exactement 4 chiffres.'); return; }
+          store = definirCode(store, nouveau.trim());
+          sauverStore();
+        } }),
+        el('button', { class: 'bouton-danger', type: 'button', text: 'Tout réinitialiser', onclick: function () {
+          if (window.confirm('Supprimer définitivement toute la classe et tous les scores sur cet appareil ?')) {
+            store = creerStockageVide();
+            sauverStore();
+            afficherIdentification();
+          }
+        } }),
+      ]),
+    ]));
+  }
+
+  afficherIdentification();
+})();
+</script>
+</body>
+</html>
